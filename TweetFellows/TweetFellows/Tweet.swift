@@ -16,4 +16,10 @@ class Tweet {
     self.text = text
     self.username = username
   }
+  
+  init(tweetInfo: [String: AnyObject]) {
+    self.text = tweetInfo["text"] as String
+    let userInfo = tweetInfo["user"] as [String: AnyObject]
+    self.username = userInfo["name"] as String
+  }
 }

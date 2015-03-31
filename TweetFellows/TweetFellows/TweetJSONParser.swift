@@ -15,18 +15,8 @@ class TweetJSONParser {
     var error: NSError?
     
     if let jsonObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as? [[String: AnyObject]] {
-      for object in jsonObject {
-        var tweetText: String = ""
-        var tweetUsername: String = ""
-        if let text = object["text"] as? String {
-          tweetText = text
-        }
-        if let user = object["user"] as? [String: AnyObject] {
-          if let username = user["name"] as? String {
-            tweetUsername = username
-          }
-        }
-        let tweet = Tweet(text: tweetText, username: tweetUsername)
+      for tweetInfo in jsonObject {
+        let tweet = Tweet(tweetInfo: tweetInfo)
         tweets.append(tweet)
       }
     }
