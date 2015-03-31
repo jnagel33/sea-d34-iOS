@@ -33,16 +33,16 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFB-SY-q2H">
-                                                    <rect key="frame" x="16" y="8" width="293" height="18"/>
+                                                    <rect key="frame" x="16" y="8" width="568" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.72260161713286697" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="zFB-SY-q2H" secondAttribute="trailing" constant="16" id="5Um-CW-fQr"/>
                                                 <constraint firstAttribute="trailing" secondItem="opl-Kp-JIX" secondAttribute="trailing" constant="16" id="9Nc-UC-HtV"/>
                                                 <constraint firstItem="opl-Kp-JIX" firstAttribute="leading" secondItem="Llb-AK-aSe" secondAttribute="leading" constant="16" id="QWi-Jo-tNi"/>
-                                                <constraint firstAttribute="trailing" secondItem="zFB-SY-q2H" secondAttribute="trailing" constant="291" id="TH8-0u-cIG"/>
                                                 <constraint firstItem="zFB-SY-q2H" firstAttribute="top" secondItem="Llb-AK-aSe" secondAttribute="top" constant="8" id="Wrc-pX-H8s"/>
                                                 <constraint firstAttribute="bottom" secondItem="opl-Kp-JIX" secondAttribute="bottom" constant="8" id="gHL-rd-r3o"/>
                                                 <constraint firstItem="zFB-SY-q2H" firstAttribute="leading" secondItem="Llb-AK-aSe" secondAttribute="leading" constant="16" id="pur-sD-dep"/>

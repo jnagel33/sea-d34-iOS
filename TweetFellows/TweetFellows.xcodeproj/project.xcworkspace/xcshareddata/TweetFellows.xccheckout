@@ -11,17 +11,17 @@
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>24030F9DCD347170E4D0C779DF11007E061AE5F5</key>
-		<string>https://github.com/codefellows/sea-d34-iOS</string>
+		<string>https://github.com/jnagel33/sea-d34-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Homework/TweetFellows/TweetFellows.xcodeproj</string>
+	<string>TweetFellows/TweetFellows.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>24030F9DCD347170E4D0C779DF11007E061AE5F5</key>
-		<string>../../../..</string>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/codefellows/sea-d34-iOS</string>
+	<string>https://github.com/jnagel33/sea-d34-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
