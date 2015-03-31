@@ -15,23 +15,23 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "18"
             endingLineNumber = "18"
-            landmarkName = "init(text:username:)"
-            landmarkType = "5">
+            landmarkName = "Tweet"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TweetFellows/TweetJSONParser.swift"
-            timestampString = "449455336.289655"
+            filePath = "TweetFellows/Tweet.swift"
+            timestampString = "449517951.068269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
-            landmarkName = "tweetsFromJSONData(_:)"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "init(tweetInfo:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
