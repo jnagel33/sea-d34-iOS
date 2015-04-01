@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D113c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Home Timeline View Controller-->
@@ -33,14 +34,14 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Tweet" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8aD-Si-o35">
-                                                    <rect key="frame" x="8" y="39" width="584" height="19.5"/>
+                                                    <rect key="frame" x="8" y="39" width="584" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="8aD-Si-o35" secondAttribute="bottom" constant="22" id="2Md-w2-5zZ"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="8aD-Si-o35" secondAttribute="bottom" constant="13" id="9UI-5r-RiL"/>
                                                 <constraint firstItem="d4H-bp-7zg" firstAttribute="top" secondItem="Llb-AK-aSe" secondAttribute="top" constant="8" id="HZx-NX-nQN"/>
                                                 <constraint firstItem="d4H-bp-7zg" firstAttribute="leading" secondItem="Llb-AK-aSe" secondAttribute="leading" constant="8" id="LRQ-Yn-IAl"/>
                                                 <constraint firstItem="8aD-Si-o35" firstAttribute="top" secondItem="d4H-bp-7zg" secondAttribute="bottom" constant="13" id="apD-Mc-QmP"/>
