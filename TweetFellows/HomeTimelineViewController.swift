@@ -27,7 +27,10 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
           self.twitterService.twitterAccount = account
           self.twitterService.fetchHomeTimeline({ (tweets, errorDescription) -> Void in
             if errorDescription != nil {
-            //TODO
+              let alert =  UIAlertController(title: "Error", message: errorDescription, preferredStyle: .Alert)
+              let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+              alert.addAction(action)
+              self.presentViewController(alert, animated: true, completion: nil)
             }
             if tweets != nil {
               self.tweets = tweets!
@@ -47,23 +50,13 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   //MARK: UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if self.tweets.count == 0 {
-      // Row will be created to tell user that no tweets were found
-      return 1
-    } else {
       return tweets.count
-    }
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
-    if self.tweets.count == 0 {
-      cell.usernameLabel.text = ""
-      cell.tweetTextLabel.text = "No tweets found"
-    } else {
       cell.usernameLabel.text = tweets[indexPath.row].username
       cell.tweetTextLabel.text = tweets[indexPath.row].text
-    }
     return cell
   }
   
