@@ -21,6 +21,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       super.viewDidLoad()
       self.tableView.dataSource = self
       self.tableView.delegate = self
+      self.tableView.rowHeight = UITableViewAutomaticDimension
+      self.tableView.estimatedRowHeight = 160.0
       
       LoginService.requestTwitterAccount { (account, error) -> Void in
         if account != nil {
