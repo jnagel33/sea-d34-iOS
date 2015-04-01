@@ -71,6 +71,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   //MARK: UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // If the tweets is empty then you must either be loading or nothing was found. Create a row to display status to the user
     if self.tweets.count == 0 {
       return 1
     } else {
@@ -82,7 +83,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     if self.tweets.count == 0 && self.isLoading {
       return tableView.dequeueReusableCellWithIdentifier("LoadingCell", forIndexPath: indexPath) as LoadingTableViewCell
     } else if self.tweets.count == 0 {
-      return tableView.dequeueReusableCellWithIdentifier("NothingFoundCell", forIndexPath: indexPath) as NothingFoundTableViewCell
+      return tableView.dequeueReusableCellWithIdentifier("NothingFoundCell", forIndexPath: indexPath) as UITableViewCell
     } else {
       let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
       cell.textLabel?.text = nil

@@ -18,7 +18,6 @@
 		43CA95411ACC517D004C2F59 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA953F1ACC517D004C2F59 /* LoadingTableViewCell.swift */; };
 		43CA95421ACC517D004C2F59 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43CA95401ACC517D004C2F59 /* LoadingTableViewCell.xib */; };
 		43CA95461ACC5253004C2F59 /* TweetTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43CA95451ACC5253004C2F59 /* TweetTableViewCell.xib */; };
-		43CA954D1ACC5CC0004C2F59 /* NothingFoundTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA954B1ACC5CC0004C2F59 /* NothingFoundTableViewCell.swift */; };
 		43CA954E1ACC5CC0004C2F59 /* NothingFoundTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43CA954C1ACC5CC0004C2F59 /* NothingFoundTableViewCell.xib */; };
 		43D804D71ACB6AAA004FB5D3 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D804D61ACB6AAA004FB5D3 /* TweetTableViewCell.swift */; };
 		43D804DB1ACB6C43004FB5D3 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D804DA1ACB6C43004FB5D3 /* LoginService.swift */; };
@@ -51,7 +50,6 @@
 		43CA953F1ACC517D004C2F59 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		43CA95401ACC517D004C2F59 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
 		43CA95451ACC5253004C2F59 /* TweetTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetTableViewCell.xib; path = ../TweetTableViewCell.xib; sourceTree = "<group>"; };
-		43CA954B1ACC5CC0004C2F59 /* NothingFoundTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NothingFoundTableViewCell.swift; sourceTree = "<group>"; };
 		43CA954C1ACC5CC0004C2F59 /* NothingFoundTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundTableViewCell.xib; sourceTree = "<group>"; };
 		43D804D61ACB6AAA004FB5D3 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetTableViewCell.swift; path = ../TweetTableViewCell.swift; sourceTree = "<group>"; };
 		43D804DA1ACB6C43004FB5D3 /* LoginService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
@@ -160,7 +158,6 @@
 				43B1DD0A1AC9E48D0004B835 /* LaunchScreen.xib */,
 				43CA953F1ACC517D004C2F59 /* LoadingTableViewCell.swift */,
 				43CA95401ACC517D004C2F59 /* LoadingTableViewCell.xib */,
-				43CA954B1ACC5CC0004C2F59 /* NothingFoundTableViewCell.swift */,
 				43CA954C1ACC5CC0004C2F59 /* NothingFoundTableViewCell.xib */,
 			);
 			name = Views;
@@ -269,7 +266,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43CA954D1ACC5CC0004C2F59 /* NothingFoundTableViewCell.swift in Sources */,
 				43B1DD2B1ACA155F0004B835 /* TweetJSONParser.swift in Sources */,
 				43D804DD1ACB6C74004FB5D3 /* TwitterService.swift in Sources */,
 				43B1DD291ACA14C70004B835 /* Tweet.swift in Sources */,
