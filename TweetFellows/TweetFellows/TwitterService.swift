@@ -25,13 +25,11 @@ class TwitterService {
     twitterRequest.account = twitterAccount
     
     twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
+      var errorDescription: String?
+      var tweets: [Tweet]?
       if error != nil {
-        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-          completionHandler(nil, error.description)
-        })
+        errorDescription = error.description
       } else {
-        var errorDescription: String?
-        var tweets = [Tweet]()
         switch response.statusCode {
         case 200...299:
           tweets = TweetJSONParser.tweetsFromJSONData(data)
@@ -42,12 +40,10 @@ class TwitterService {
         default:
           errorDescription = "Try again"
         }
-        
-        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-          completionHandler(tweets, errorDescription)
-        })
-        
       }
+      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+        completionHandler(tweets, errorDescription)
+      })
     }
   }
 }

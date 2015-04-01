@@ -15,14 +15,20 @@ class LoginService {
     let accountStore = ACAccountStore()
     let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
     accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) -> Void in
+      var twitterAccount: ACAccount? = nil
+      var errorDescription: String? = nil
       if granted && error == nil {
         if let accounts = accountStore.accountsWithAccountType(accountType) as? [ACAccount] {
-          let twitterAccount = accounts.first
-          completionHandler(twitterAccount, nil)
+          twitterAccount = accounts.first
         }
       } else {
-        completionHandler(nil, "Could not access your Twitter Account")
+        if error != nil {
+          errorDescription = "An error occured when retrieving your Twitter Account"
+        } else {
+          errorDescription = "Access to your account was not granted"
+        }
       }
+      completionHandler(twitterAccount, errorDescription)
     }
   }
   

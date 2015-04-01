@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D113c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Home Timeline View Controller-->
@@ -20,42 +19,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="81" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="NU8-H1-CR3">
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TweetCell" rowHeight="81" id="OdY-Dp-eY8" customClass="TweetTableViewCell" customModule="TweetFellows" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OdY-Dp-eY8" id="Llb-AK-aSe">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4H-bp-7zg">
-                                                    <rect key="frame" x="8" y="8" width="584" height="18"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.72260161710000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Tweet" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8aD-Si-o35">
-                                                    <rect key="frame" x="8" y="39" width="584" height="20"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="8aD-Si-o35" secondAttribute="bottom" constant="13" id="9UI-5r-RiL"/>
-                                                <constraint firstItem="d4H-bp-7zg" firstAttribute="top" secondItem="Llb-AK-aSe" secondAttribute="top" constant="8" id="HZx-NX-nQN"/>
-                                                <constraint firstItem="d4H-bp-7zg" firstAttribute="leading" secondItem="Llb-AK-aSe" secondAttribute="leading" constant="8" id="LRQ-Yn-IAl"/>
-                                                <constraint firstItem="8aD-Si-o35" firstAttribute="top" secondItem="d4H-bp-7zg" secondAttribute="bottom" constant="13" id="apD-Mc-QmP"/>
-                                                <constraint firstAttribute="trailing" secondItem="d4H-bp-7zg" secondAttribute="trailing" constant="8" id="bV8-aJ-7eL"/>
-                                                <constraint firstAttribute="trailing" secondItem="8aD-Si-o35" secondAttribute="trailing" constant="8" id="iKP-Aa-dMD"/>
-                                                <constraint firstItem="8aD-Si-o35" firstAttribute="leading" secondItem="Llb-AK-aSe" secondAttribute="leading" constant="8" id="xkL-0x-Uvu"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="tweetTextLabel" destination="8aD-Si-o35" id="wZx-2P-uyY"/>
-                                            <outlet property="usernameLabel" destination="d4H-bp-7zg" id="ymm-al-9Ee"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

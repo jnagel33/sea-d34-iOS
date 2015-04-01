@@ -17,24 +17,34 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
   var tweets = [Tweet]()
   
+  var isLoading = false
+  
     override func viewDidLoad() {
       super.viewDidLoad()
       self.tableView.dataSource = self
       self.tableView.delegate = self
       
-      self.tableView.alpha = 0
-      UIView.animateWithDuration(2.0, animations: { () -> Void in
-        self.tableView.alpha = 1
-      })
+      var cellNib = UINib(nibName: "TweetTableViewCell", bundle: NSBundle.mainBundle())
+      self.tableView.registerNib(cellNib, forCellReuseIdentifier: "TweetCell")
+      cellNib = UINib(nibName: "LoadingTableViewCell", bundle: NSBundle.mainBundle())
+      self.tableView.registerNib(cellNib, forCellReuseIdentifier: "LoadingCell")
+      cellNib = UINib(nibName: "NothingFoundTableViewCell", bundle: NSBundle.mainBundle())
+      self.tableView.registerNib(cellNib, forCellReuseIdentifier: "NothingFoundCell")
+      
+      self.isLoading = true
       
       self.tableView.rowHeight = UITableViewAutomaticDimension
       self.tableView.estimatedRowHeight = 160.0
+      
+      
       
       LoginService.requestTwitterAccount { (account, error) -> Void in
         if account != nil {
           self.twitterService.twitterAccount = account
           self.twitterService.fetchHomeTimeline({ (tweets, errorDescription) -> Void in
             if errorDescription != nil {
+              self.isLoading = false
+              self.tableView.reloadData()
               let alert =  UIAlertController(title: "Error", message: errorDescription, preferredStyle: .Alert)
               let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
               alert.addAction(action)
@@ -42,10 +52,13 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
             }
             if tweets != nil {
               self.tweets = tweets!
+              self.isLoading = false
               self.tableView.reloadData()
             }
           })
         } else {
+          self.isLoading = false
+          self.tableView.reloadData()
           let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
           let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
           alert.addAction(action)
@@ -58,16 +71,26 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   //MARK: UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    if self.tweets.count == 0 {
+      return 1
+    } else {
       return tweets.count
+    }
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
+    if self.tweets.count == 0 && self.isLoading {
+      return tableView.dequeueReusableCellWithIdentifier("LoadingCell", forIndexPath: indexPath) as LoadingTableViewCell
+    } else if self.tweets.count == 0 {
+      return tableView.dequeueReusableCellWithIdentifier("NothingFoundCell", forIndexPath: indexPath) as NothingFoundTableViewCell
+    } else {
+      let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
       cell.textLabel?.text = nil
       cell.usernameLabel?.text = nil
-      cell.usernameLabel.text = tweets[indexPath.row].username
-      cell.tweetTextLabel.text = tweets[indexPath.row].text
-    return cell
+      cell.usernameLabel.text = self.tweets[indexPath.row].username
+      cell.tweetTextLabel.text = self.tweets[indexPath.row].text
+      return cell
+    }
   }
   
   //MARK:

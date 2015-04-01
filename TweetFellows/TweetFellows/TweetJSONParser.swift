@@ -25,6 +25,8 @@ class TweetJSONParser {
           }
         }
       }
+    } else {
+      // An error occured when serializing json data
     }
     return tweets
   }

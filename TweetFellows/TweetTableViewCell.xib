@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D113c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TweetCell" rowHeight="81" id="7vr-Nl-E7G" customClass="TweetTableViewCell" customModule="TweetFellows" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="81"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7vr-Nl-E7G" id="whi-7g-WXU">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rki-bj-OsX">
+                        <rect key="frame" x="8" y="8" width="584" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.72260161710000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Tweet" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOW-Nm-Au3">
+                        <rect key="frame" x="8" y="39" width="584" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="rki-bj-OsX" secondAttribute="trailing" constant="8" id="5Ms-5N-gr6"/>
+                    <constraint firstItem="fOW-Nm-Au3" firstAttribute="top" secondItem="rki-bj-OsX" secondAttribute="bottom" constant="13" id="Chc-fj-e5s"/>
+                    <constraint firstItem="rki-bj-OsX" firstAttribute="leading" secondItem="whi-7g-WXU" secondAttribute="leading" constant="8" id="VAY-Kb-Llt"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="fOW-Nm-Au3" secondAttribute="bottom" constant="13" id="fmE-o9-Z7m"/>
+                    <constraint firstItem="rki-bj-OsX" firstAttribute="top" secondItem="whi-7g-WXU" secondAttribute="top" constant="8" id="gza-Bz-4PM"/>
+                    <constraint firstAttribute="trailing" secondItem="fOW-Nm-Au3" secondAttribute="trailing" constant="8" id="kLp-P8-qAK"/>
+                    <constraint firstItem="fOW-Nm-Au3" firstAttribute="leading" secondItem="whi-7g-WXU" secondAttribute="leading" constant="8" id="mu8-57-F53"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="tweetTextLabel" destination="fOW-Nm-Au3" id="HWQ-AH-6tA"/>
+                <outlet property="usernameLabel" destination="rki-bj-OsX" id="unF-gq-LDE"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
