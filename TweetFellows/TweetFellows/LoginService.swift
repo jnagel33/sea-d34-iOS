@@ -25,7 +25,7 @@ class LoginService {
         if error != nil {
           errorDescription = "An error occured when retrieving your Twitter Account"
         } else {
-          errorDescription = "Access to your account was not granted"
+          errorDescription = "Access to your account could not be granted"
         }
       }
       completionHandler(twitterAccount, errorDescription)
