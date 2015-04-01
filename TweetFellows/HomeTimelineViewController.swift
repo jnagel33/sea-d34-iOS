@@ -8,19 +8,37 @@
 
 import UIKit
 
-class HomeTimelineViewController: UIViewController, UITableViewDataSource {
+
+class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
   @IBOutlet weak var tableView: UITableView!
   
-  var tweets: [Tweet]?
+  let twitterService = TwitterService()
+  
+  var tweets = [Tweet]()
   
     override func viewDidLoad() {
       super.viewDidLoad()
-      tableView.dataSource = self
+      self.tableView.dataSource = self
+      self.tableView.delegate = self
       
-      if let filePath = NSBundle.mainBundle().pathForResource("tweet", ofType: "json") {
-        if let data = NSData(contentsOfFile: filePath) {
-          self.tweets = TweetJSONParser.tweetsFromJSONData(data)
+      LoginService.requestTwitterAccount { (account, error) -> Void in
+        if account != nil {
+          self.twitterService.twitterAccount = account
+          self.twitterService.fetchHomeTimeline({ (tweets, errorDescription) -> Void in
+            if errorDescription != nil {
+            //TODO
+            }
+            if tweets != nil {
+              self.tweets = tweets!
+              self.tableView.reloadData()
+            }
+          })
+        } else {
+          let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iPhone Settings", preferredStyle: .Alert)
+          let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+          alert.addAction(action)
+          self.presentViewController(alert, animated: true, completion: nil)
         }
       }
     }
@@ -29,19 +47,30 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
   //MARK: UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if let count = tweets?.count {
-      return count
+    if self.tweets.count == 0 {
+      // Row will be created to tell user that no tweets were found
+      return 1
     } else {
-      return 0
+      return tweets.count
     }
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as UITableViewCell
-    let usernameLabel = cell.contentView.viewWithTag(1) as UILabel
-    let textLabel = cell.contentView.viewWithTag(2) as UILabel
-    usernameLabel.text = tweets![indexPath.row].username
-    textLabel.text = tweets![indexPath.row].text
+    let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
+    if self.tweets.count == 0 {
+      cell.usernameLabel.text = ""
+      cell.tweetTextLabel.text = "No tweets found"
+    } else {
+      cell.usernameLabel.text = tweets[indexPath.row].username
+      cell.tweetTextLabel.text = tweets[indexPath.row].text
+    }
     return cell
+  }
+  
+  //MARK:
+  //MARK: UITableViewDelegate
+  
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
 }
