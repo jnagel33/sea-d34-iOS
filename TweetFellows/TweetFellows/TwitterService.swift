@@ -21,10 +21,11 @@ class TwitterService {
   
   func fetchHomeTimeline(completionHandler: ([Tweet]?, String?) -> Void) {
     let requestURL = NSURL(string: homeTimelineURL)
-    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
+    let parameter = ["count":"50"]
+    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameter)
     twitterRequest.account = twitterAccount
     
-    twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
+    twitterRequest.performRequestWithHandler { (data, response, error) in
       var errorDescription: String?
       var tweets: [Tweet]?
       if error != nil {
@@ -41,7 +42,7 @@ class TwitterService {
           errorDescription = "Try again"
         }
       }
-      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+      NSOperationQueue.mainQueue().addOperationWithBlock({
         completionHandler(tweets, errorDescription)
       })
     }

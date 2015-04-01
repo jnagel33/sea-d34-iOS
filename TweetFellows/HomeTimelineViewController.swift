@@ -38,10 +38,10 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       
       
       
-      LoginService.requestTwitterAccount { (account, error) -> Void in
+      LoginService.requestTwitterAccount { (account, error) in
         if account != nil {
           self.twitterService.twitterAccount = account
-          self.twitterService.fetchHomeTimeline({ (tweets, errorDescription) -> Void in
+          self.twitterService.fetchHomeTimeline({ (tweets, errorDescription) in
             if errorDescription != nil {
               self.isLoading = false
               self.tableView.reloadData()
@@ -88,8 +88,9 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
       cell.textLabel?.text = nil
       cell.usernameLabel?.text = nil
-      cell.usernameLabel.text = self.tweets[indexPath.row].username
-      cell.tweetTextLabel.text = self.tweets[indexPath.row].text
+      let tweet = tweets[indexPath.row]
+      cell.usernameLabel.text = tweet.username
+      cell.tweetTextLabel.text = tweet.text
       return cell
     }
   }

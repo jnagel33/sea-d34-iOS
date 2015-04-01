@@ -14,7 +14,7 @@ class LoginService {
   class func requestTwitterAccount(completionHandler: (ACAccount?, String?) -> Void) {
     let accountStore = ACAccountStore()
     let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-    accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) -> Void in
+    accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) in
       var twitterAccount: ACAccount? = nil
       var errorDescription: String? = nil
       if granted && error == nil {

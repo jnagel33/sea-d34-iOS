@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeTimelineViewController.swift"
-            timestampString = "449600867.600708"
+            timestampString = "449609901.436785"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TweetFellows/TwitterService.swift"
-            timestampString = "449601679.354149"
+            timestampString = "449610261.850001"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
             landmarkName = "fetchHomeTimeline(_:)"
             landmarkType = "5">
          </BreakpointContent>
