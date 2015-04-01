@@ -26,7 +26,9 @@ class TwitterService {
     
     twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
       if error != nil {
-        // handle error here - hardware
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+          completionHandler(nil, error.description)
+        })
       } else {
         var errorDescription: String?
         var tweets = [Tweet]()
