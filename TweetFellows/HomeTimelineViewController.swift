@@ -21,6 +21,12 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       super.viewDidLoad()
       self.tableView.dataSource = self
       self.tableView.delegate = self
+      
+      self.tableView.alpha = 0
+      UIView.animateWithDuration(2.0, animations: { () -> Void in
+        self.tableView.alpha = 1
+      })
+      
       self.tableView.rowHeight = UITableViewAutomaticDimension
       self.tableView.estimatedRowHeight = 160.0
       
@@ -40,7 +46,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
             }
           })
         } else {
-          let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iPhone Settings", preferredStyle: .Alert)
+          let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
           let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
           alert.addAction(action)
           self.presentViewController(alert, animated: true, completion: nil)
@@ -57,6 +63,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
+      cell.textLabel?.text = nil
+      cell.usernameLabel?.text = nil
       cell.usernameLabel.text = tweets[indexPath.row].username
       cell.tweetTextLabel.text = tweets[indexPath.row].text
     return cell
