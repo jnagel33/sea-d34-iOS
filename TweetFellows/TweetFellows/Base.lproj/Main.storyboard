@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Gfz-2u-Ey8">
@@ -67,8 +67,8 @@
                             <constraint firstAttribute="centerY" secondItem="Gfz-2u-Ey8" secondAttribute="centerY" id="4Mh-JT-sKK"/>
                             <constraint firstAttribute="centerX" secondItem="Gfz-2u-Ey8" secondAttribute="centerX" id="Qaq-bb-xTf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="NU8-H1-CR3" secondAttribute="trailing" constant="-16" id="TfM-Da-CT5"/>
+                            <constraint firstItem="NU8-H1-CR3" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="kgK-F9-Yi8"/>
                             <constraint firstItem="NU8-H1-CR3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="qUI-7q-9qv"/>
-                            <constraint firstItem="NU8-H1-CR3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-64" id="tAA-86-24L"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NU8-H1-CR3" secondAttribute="bottom" id="yi3-Zo-w9e"/>
                         </constraints>
                     </view>
@@ -85,8 +85,9 @@
         <!--Navigation Controller-->
         <scene sceneID="Xdt-rE-77U">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="t0P-xN-420" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" hidesBarsOnSwipe="YES" id="t0P-xN-420" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="X9y-yc-R64">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
