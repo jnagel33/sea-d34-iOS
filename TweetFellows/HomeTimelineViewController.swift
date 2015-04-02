@@ -20,18 +20,18 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
     override func viewDidLoad() {
       super.viewDidLoad()
+      
       self.tableView.dataSource = self
       self.tableView.delegate = self
       self.activityIndicator.startAnimating()
       self.tableView.userInteractionEnabled = false
-      
+      self.tableView.rowHeight = UITableViewAutomaticDimension
+      self.tableView.estimatedRowHeight = 160.0
       self.tableView.alpha = 0
       UIView.animateWithDuration(2.0, animations: { () -> Void in
         self.tableView.alpha = 1
       })
       
-      self.tableView.rowHeight = UITableViewAutomaticDimension
-      self.tableView.estimatedRowHeight = 160.0
       
       LoginService.requestTwitterAccount { (account, error) -> Void in
         if account != nil {
@@ -46,8 +46,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
             if tweets != nil {
               self.tweets = tweets!
               self.tableView.reloadData()
-              self.activityIndicator.stopAnimating()
               self.tableView.userInteractionEnabled = true
+              self.activityIndicator.stopAnimating()
             }
           })
         } else {
@@ -73,6 +73,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     let tweet = tweets[indexPath.row]
     cell.usernameLabel.text = tweet.username
     cell.tweetTextLabel.text = tweet.text
+    
     return cell
   }
   
@@ -84,6 +85,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     let tweet = tweets[indexPath.row]
     let singleTweetContoller = SingleTweetViewController(nibName: "SingleTweetView", bundle: nil)
     singleTweetContoller.tweetId = tweet.id
+    singleTweetContoller.tweetText = tweet.text
+    singleTweetContoller.tweetUsername = tweet.username
     navigationController?.pushViewController(singleTweetContoller, animated: true)
   }
 }

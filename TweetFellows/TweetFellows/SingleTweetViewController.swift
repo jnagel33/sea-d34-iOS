@@ -13,21 +13,43 @@ class SingleTweetViewController: UIViewController {
   let twitterService = TwitterService()
   var currentTweet: Tweet?
   var tweetId: Int?
+  var tweetText: String?
+  var tweetUsername: String?
   
   @IBOutlet weak var tweetTextLabel: UILabel!
   @IBOutlet weak var usernameLabel: UILabel!
   @IBOutlet weak var screenNameLabel: UILabel!
+  @IBOutlet weak var retweetCountLabel: UILabel!
+  @IBOutlet weak var favoriteCountLabel: UILabel!
   @IBOutlet weak var hashtagsLabel: UILabel!
   @IBOutlet weak var profilePicImage: UIImageView!
   @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+  @IBOutlet weak var lineSeperatorView: UIView!
+  @IBOutlet weak var retweetLabel: UILabel!
+  @IBOutlet weak var favoriteLabel: UILabel!
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.tweetTextLabel.text = tweetText
+    self.usernameLabel.text = tweetUsername
     self.activityIndicator.startAnimating()
-    self.usernameLabel.text = ""
-    self.screenNameLabel.text = ""
-    self.tweetTextLabel.text = ""
-    self.hashtagsLabel.text = ""
+    
+    
+    UIView.animateWithDuration(1.5, animations: { () -> Void in
+      self.tweetTextLabel.alpha = 1
+      self.usernameLabel.alpha = 1
+      self.screenNameLabel.alpha = 1
+      self.retweetLabel.alpha = 1
+      self.retweetCountLabel.alpha = 1
+      self.favoriteLabel.alpha = 1
+      self.favoriteCountLabel.alpha = 1
+      self.hashtagsLabel.alpha = 1
+      self.lineSeperatorView.alpha = 1
+      self.profilePicImage.alpha = 1
+      
+    })
+    
+    
     
     LoginService.requestTwitterAccount { (account, error) -> Void in
       if account != nil {
@@ -39,26 +61,32 @@ class SingleTweetViewController: UIViewController {
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
           } else {
-            if tweet != nil {
-              self.activityIndicator.stopAnimating()
-              self.currentTweet = tweet
-              self.usernameLabel.text = self.currentTweet!.username
-              self.screenNameLabel.text = self.currentTweet!.screenName
-              self.tweetTextLabel.text = self.currentTweet!.text
-              var hashtagString = "Hashtags used: "
-              if let hashtags = self.currentTweet!.hashtags {
-                for hashtag in hashtags {
-                  hashtagString += "#\(hashtag) "
-                }
-              }
-              self.hashtagsLabel.text = hashtagString
-              if let profileImageData = self.currentTweet!.profilePic {
-                self.profilePicImage.image = UIImage(data: profileImageData)
-              }
+            if let tweetSelected = tweet {
+              self.configureTweet(tweetSelected)
             }
           }
         }
       }
+    }
+  }
+  
+  func configureTweet(tweet: Tweet) {
+    self.currentTweet = tweet
+    self.activityIndicator.stopAnimating()
+    self.usernameLabel.text = tweet.username
+    self.screenNameLabel.text = tweet.screenName
+    self.tweetTextLabel.text = tweet.text
+    self.retweetCountLabel.text = "\(tweet.retweetCount!)"
+    self.favoriteCountLabel.text = "\(tweet.favoriteCount!)"
+    var hashtagString = "Hashtags used: "
+    if let hashtags = tweet.hashtags {
+      for hashtag in hashtags {
+        hashtagString += "#\(hashtag) "
+      }
+    }
+    self.hashtagsLabel.text = hashtagString
+    if let profileImageData = tweet.profilePic {
+      self.profilePicImage.image = UIImage(data: profileImageData)
     }
   }
 }

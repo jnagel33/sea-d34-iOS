@@ -12,6 +12,8 @@ class Tweet {
   var id: Int?
   var text: String?
   var username: String?
+  var retweetCount: Int?
+  var favoriteCount: Int?
   var hashtags: [String]?
   var createdAt: NSDate?
   var screenName: String?
