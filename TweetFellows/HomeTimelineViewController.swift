@@ -12,6 +12,7 @@ import UIKit
 class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   
   let twitterService = TwitterService()
   
@@ -21,6 +22,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       super.viewDidLoad()
       self.tableView.dataSource = self
       self.tableView.delegate = self
+      self.activityIndicator.startAnimating()
+      self.tableView.userInteractionEnabled = false
       
       self.tableView.alpha = 0
       UIView.animateWithDuration(2.0, animations: { () -> Void in
@@ -43,6 +46,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
             if tweets != nil {
               self.tweets = tweets!
               self.tableView.reloadData()
+              self.activityIndicator.stopAnimating()
+              self.tableView.userInteractionEnabled = true
             }
           })
         } else {
@@ -63,10 +68,11 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
-      cell.textLabel?.text = nil
-      cell.usernameLabel?.text = nil
-      cell.usernameLabel.text = tweets[indexPath.row].username
-      cell.tweetTextLabel.text = tweets[indexPath.row].text
+    cell.textLabel?.text = nil
+    cell.usernameLabel?.text = nil
+    let tweet = tweets[indexPath.row]
+    cell.usernameLabel.text = tweet.username
+    cell.tweetTextLabel.text = tweet.text
     return cell
   }
   
@@ -75,5 +81,9 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    let tweet = tweets[indexPath.row]
+    let singleTweetContoller = SingleTweetViewController(nibName: "SingleTweetView", bundle: nil)
+    singleTweetContoller.tweetId = tweet.id
+    navigationController?.pushViewController(singleTweetContoller, animated: true)
   }
 }
