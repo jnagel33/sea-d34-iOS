@@ -27,6 +27,7 @@ class SingleTweetViewController: UIViewController {
   @IBOutlet weak var lineSeperatorView: UIView!
   @IBOutlet weak var retweetLabel: UILabel!
   @IBOutlet weak var favoriteLabel: UILabel!
+  @IBOutlet weak var createdAtLabel: UILabel!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -46,7 +47,7 @@ class SingleTweetViewController: UIViewController {
       self.hashtagsLabel.alpha = 1
       self.lineSeperatorView.alpha = 1
       self.profilePicImage.alpha = 1
-      
+      self.createdAtLabel.alpha = 1
     })
     
     
@@ -78,6 +79,13 @@ class SingleTweetViewController: UIViewController {
     self.tweetTextLabel.text = tweet.text
     self.retweetCountLabel.text = "\(tweet.retweetCount!)"
     self.favoriteCountLabel.text = "\(tweet.favoriteCount!)"
+    
+    let formatter = NSDateFormatter()
+    formatter.dateStyle = NSDateFormatterStyle.LongStyle
+    formatter.timeStyle = .MediumStyle
+    let dateString = formatter.stringFromDate(tweet.createdAt!)
+    self.createdAtLabel.text = dateString
+
     var hashtagString = "Hashtags used: "
     if let hashtags = tweet.hashtags {
       for hashtag in hashtags {

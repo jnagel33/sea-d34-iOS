@@ -22,7 +22,7 @@ class TwitterService {
   
   func fetchHomeTimeline(completionHandler: ([Tweet]?, String?) -> Void) {
     let requestURL = NSURL(string: homeTimelineURL)
-    let parameters: [String: AnyObject] = ["count": "50"]
+    let parameters: [String: AnyObject] = ["count": "100"]
     let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters)
     twitterRequest.account = twitterAccount
     

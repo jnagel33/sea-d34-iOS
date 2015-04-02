@@ -61,7 +61,7 @@ class TweetJSONParser {
         }
         if let createdAt = tweetInfo["created_at"] as? String {
           var dateFormatter = NSDateFormatter()
-          dateFormatter.dateFormat = "EEE, d MMMM y HH:mm:ss Z"
+          dateFormatter.dateFormat = "eee MMM dd HH:mm:ss ZZZZ yyyy"
           if let date = dateFormatter.dateFromString(createdAt) {
             tweet.createdAt = date
           }
