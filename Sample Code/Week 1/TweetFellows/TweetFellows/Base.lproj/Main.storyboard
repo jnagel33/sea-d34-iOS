@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C106a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="EOu-Ln-VXw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D113c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="EOu-Ln-VXw">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -68,8 +68,8 @@
                         <constraints>
                             <constraint firstItem="Jmp-8u-EQ8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="1HZ-lV-wXs"/>
                             <constraint firstAttribute="centerY" secondItem="lA5-gd-wYt" secondAttribute="centerY" id="8dn-A6-2vq"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Jmp-8u-EQ8" secondAttribute="bottom" id="HQa-1n-tbs"/>
                             <constraint firstItem="Jmp-8u-EQ8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="Nlh-cK-ZkX"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Jmp-8u-EQ8" secondAttribute="bottom" id="RLz-WJ-Ix8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Jmp-8u-EQ8" secondAttribute="trailing" constant="-16" id="bQo-dI-lQd"/>
                             <constraint firstAttribute="centerX" secondItem="lA5-gd-wYt" secondAttribute="centerX" id="yay-H1-BUX"/>
                         </constraints>

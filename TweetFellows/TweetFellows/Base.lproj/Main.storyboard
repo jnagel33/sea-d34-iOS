@@ -17,10 +17,6 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Gfz-2u-Ey8">
-                                <rect key="frame" x="281" y="281" width="37" height="37"/>
-                                <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="81" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="NU8-H1-CR3">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -38,7 +34,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Tweet" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8aD-Si-o35">
-                                                    <rect key="frame" x="8" y="34" width="584" height="30.5"/>
+                                                    <rect key="frame" x="8" y="34" width="584" height="31"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -61,13 +57,18 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Gfz-2u-Ey8">
+                                <rect key="frame" x="281" y="281" width="37" height="37"/>
+                                <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="Gfz-2u-Ey8" secondAttribute="centerY" id="4Mh-JT-sKK"/>
+                            <constraint firstItem="NU8-H1-CR3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="Isw-pt-Nyl"/>
                             <constraint firstAttribute="centerX" secondItem="Gfz-2u-Ey8" secondAttribute="centerX" id="Qaq-bb-xTf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="NU8-H1-CR3" secondAttribute="trailing" constant="-16" id="TfM-Da-CT5"/>
-                            <constraint firstItem="NU8-H1-CR3" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="kgK-F9-Yi8"/>
+                            <constraint firstItem="NU8-H1-CR3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-64" id="nSS-5a-cf3"/>
                             <constraint firstItem="NU8-H1-CR3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="qUI-7q-9qv"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NU8-H1-CR3" secondAttribute="bottom" id="yi3-Zo-w9e"/>
                         </constraints>
@@ -93,6 +94,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="QDw-Og-Su4">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="OxO-al-s6w"/>
                     </connections>
