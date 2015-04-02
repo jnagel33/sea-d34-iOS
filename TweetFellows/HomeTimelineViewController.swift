@@ -24,6 +24,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       self.tableView.delegate = self
       self.activityIndicator.startAnimating()
       self.tableView.userInteractionEnabled = false
+//      self.edgesForExtendedLayout = UIRectEdge.None
       
       self.tableView.alpha = 0
       UIView.animateWithDuration(2.0, animations: { () -> Void in
