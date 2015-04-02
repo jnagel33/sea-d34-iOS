@@ -26,29 +26,21 @@ class TwitterService {
     twitterRequest.account = twitterAccount
     
     twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
+      var errorDescription: String? = nil
+      var tweets: [Tweet]? = nil
       if error != nil {
-        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-          completionHandler(nil, error.description)
-        })
+        errorDescription = error.description
       } else {
-        var errorDescription: String?
-        var tweets = [Tweet]()
-        switch response.statusCode {
-        case 200...299:
+        let status = self.checkStatusCode(response.statusCode)
+        if status.readyToParse {
           tweets = TweetJSONParser.tweetsFromJSONData(data)
-        case 400...499:
-          errorDescription = "Oops, please try again."
-        case 500...599:
-          errorDescription = "Service is down, please try again later."
-        default:
-          errorDescription = "Try again"
+        } else {
+          errorDescription = status.errorDescription
         }
-        
-        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-          completionHandler(tweets, errorDescription)
-        })
-        
       }
+      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+        completionHandler(tweets, errorDescription)
+      })
     }
   }
   
@@ -59,30 +51,37 @@ class TwitterService {
     twitterRequest.account = twitterAccount
     
     twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
+      var errorDescription: String? = nil
+      var tweet: Tweet? = nil
       if error != nil {
-        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-          completionHandler(nil, error.description)
-        })
+        errorDescription = error.description
       } else {
-        var errorDescription: String?
-        var tweet = Tweet()
-        switch response.statusCode {
-        case 200...299:
+        let status = self.checkStatusCode(response.statusCode)
+        if status.readyToParse {
           tweet = TweetJSONParser.tweetFromJSONData(data)
-        case 400...499:
-          errorDescription = "Oops, please try again."
-        case 500...599:
-          errorDescription = "Service is down, please try again later."
-        default:
-          errorDescription = "Try again"
+        } else {
+          errorDescription = status.errorDescription
         }
-        
-        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-          completionHandler(tweet, errorDescription)
-        })
-        
       }
+      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+        completionHandler(tweet, errorDescription)
+      })
     }
-
+  }
+  
+  func checkStatusCode(statusCode: Int) -> (readyToParse: Bool, errorDescription: String?) {
+    var readyToParse: Bool = false
+    var errorDescription: String? = nil
+    switch statusCode {
+    case 200...299:
+      readyToParse = true
+    case 400...499:
+      errorDescription = "Oops, please try again."
+    case 500...599:
+      errorDescription = "Service is down, please try again later."
+    default:
+      errorDescription = "Try again"
+    }
+    return (readyToParse, errorDescription)
   }
 }
