@@ -9,11 +9,16 @@
 import Foundation
 
 class Tweet {
-  let text: String
-  let username: String
+  var id: Int?
+  var text: String?
+  var username: String?
+  var hashtags: [String]?
+  var createdAt: NSDate?
+  var screenName: String?
+  var profilePic: NSData?
   
-  init(text: String, username: String) {
-    self.text = text
-    self.username = username
+  
+  init() {
+    
   }
 }
