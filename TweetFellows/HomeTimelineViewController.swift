@@ -48,7 +48,9 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
             if tweets != nil {
               self.tweets = tweets!
               self.tableView.reloadData()
-              self.tableView.userInteractionEnabled = true
+              UIView.animateWithDuration(1.0, animations: { () -> Void in
+                self.tableView.userInteractionEnabled = true
+              })
               self.activityIndicator.stopAnimating()
             }
           })
@@ -89,11 +91,13 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
           tweet.profileImage = image
           if tag == cell.tag {
             cell.profileImage.image = tweet.profileImage
+            cell.profileImage.layer.cornerRadius = 8.0
+            cell.profileImage.clipsToBounds = true
           }
         }
       })
         
-      }
+    }
     cell.layoutIfNeeded()
     return cell
   }
@@ -105,11 +109,9 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
     
     let tweet = tweets[indexPath.row]
-    let singleTweetContoller = SingleTweetViewController(nibName: "SingleTweetView", bundle: nil)
-    singleTweetContoller.tweetId = tweet.id
-    singleTweetContoller.tweetText = tweet.text
-    singleTweetContoller.tweetUsername = tweet.username
-    singleTweetContoller.tweetProfileImage = tweet.profileImage
+    let singleTweetContoller = self.storyboard?.instantiateViewControllerWithIdentifier("SingleTweetViewController") as SingleTweetViewController
+    
+    singleTweetContoller.selectedTweet = tweet
     
     navigationController?.pushViewController(singleTweetContoller, animated: true)
   }

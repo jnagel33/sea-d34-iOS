@@ -11,11 +11,7 @@ import UIKit
 class SingleTweetViewController: UIViewController {
 
   let twitterService: TwitterService!
-  var currentTweet: Tweet!
-  var tweetId: Int?
-  var tweetText: String?
-  var tweetUsername: String?
-  var tweetProfileImage: UIImage?
+  var selectedTweet: Tweet!
   
   @IBOutlet weak var profileImageButton: UIButton!
   @IBOutlet weak var tweetTextLabel: UILabel!
@@ -31,9 +27,11 @@ class SingleTweetViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.tweetTextLabel.text = tweetText
-    self.usernameLabel.text = tweetUsername
-    self.profileImageButton.setBackgroundImage(tweetProfileImage, forState: .Normal)
+    self.tweetTextLabel.text = selectedTweet.text
+    self.usernameLabel.text = selectedTweet.username
+    self.profileImageButton.setBackgroundImage(selectedTweet.profileImage, forState: .Normal)
+    self.profileImageButton.layer.cornerRadius = 8.0
+    self.profileImageButton.clipsToBounds = true
     self.activityIndicator.startAnimating()
     
     
@@ -55,7 +53,7 @@ class SingleTweetViewController: UIViewController {
     LoginService.requestTwitterAccount { (account, error) -> Void in
       if account != nil {
         TwitterService.sharedService.twitterAccount = account
-        TwitterService.sharedService.fetchStatuses(self.tweetId!) { (tweet, errorDescription) -> Void in
+        TwitterService.sharedService.fetchStatuses(self.selectedTweet.id!) { (tweet, errorDescription) -> Void in
           if errorDescription != nil {
             let alert =  UIAlertController(title: "Error", message: errorDescription, preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
@@ -63,6 +61,7 @@ class SingleTweetViewController: UIViewController {
             self.presentViewController(alert, animated: true, completion: nil)
           } else {
             if let tweetSelected = tweet {
+              self.selectedTweet.screenName = tweetSelected.screenName
               self.configureTweet(tweetSelected)
             }
           }
@@ -72,8 +71,8 @@ class SingleTweetViewController: UIViewController {
   }
   
   func configureTweet(tweet: Tweet) {
-    self.currentTweet = tweet
     self.activityIndicator.stopAnimating()
+    self.tweetTextLabel.text = tweet.text
     self.screenNameLabel.text = tweet.screenName
     self.retweetCountLabel.text = "\(tweet.retweetCount)"
     self.favoriteCountLabel.text = "\(tweet.favoriteCount)"
@@ -83,6 +82,15 @@ class SingleTweetViewController: UIViewController {
     formatter.timeStyle = .MediumStyle
     let dateString = formatter.stringFromDate(tweet.createdAt)
     self.createdAtLabel.text = dateString
+  }
+  
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if segue.identifier == "UserTweets" {
+      let destinationController = segue.destinationViewController as UserTweetsTableViewController
+      destinationController.username = selectedTweet.username
+      destinationController.screenName = selectedTweet.screenName
+      destinationController.profileImage = selectedTweet.profileImage
+    }
   }
 }
 

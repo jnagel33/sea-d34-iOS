@@ -27,6 +27,7 @@ class TwitterService {
   var twitterAccount: ACAccount?
   let homeTimelineURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
   let statusesURL = "https://api.twitter.com/1.1/statuses/show.json"
+  let userTimelineURL = "https://api.twitter.com/1.1/statuses/user_timeline.json"
   
   
   init() {
@@ -72,7 +73,7 @@ class TwitterService {
       } else {
         let status = self.checkStatusCode(response.statusCode)
         if status.readyToParse {
-          tweet = TweetJSONParser.tweetFromJSONData(data)
+          tweet = TweetJSONParser.tweetInfoFromJSONData(data)
         } else {
           errorDescription = status.errorDescription
         }
@@ -81,6 +82,32 @@ class TwitterService {
         completionHandler(tweet, errorDescription)
       })
     }
+  }
+  
+  func fetchUserTimeline(screenName: String, completionHandler: ([Tweet]?, String?) -> Void) {
+    let requestURL = NSURL(string: userTimelineURL)
+    let parameter = ["screen_name": "\(screenName)"]
+    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameter)
+    twitterRequest.account = twitterAccount
+    
+    twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
+      var errorDescription: String? = nil
+      var tweets: [Tweet]? = nil
+      if error != nil {
+        errorDescription = error.description
+      } else {
+        let status = self.checkStatusCode(response.statusCode)
+        if status.readyToParse {
+          tweets = TweetJSONParser.tweetsFromJSONData(data)
+        } else {
+          errorDescription = status.errorDescription
+        }
+      }
+      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+        completionHandler(tweets, errorDescription)
+      })
+    }
+
   }
   
   func checkStatusCode(statusCode: Int) -> (readyToParse: Bool, errorDescription: String?) {

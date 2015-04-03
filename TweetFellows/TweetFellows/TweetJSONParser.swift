@@ -27,8 +27,11 @@ class TweetJSONParser {
           if let username = userInfo["name"] as? String {
             tweet.username = username
           }
-          if let profilePicURL = userInfo["profile_image_url"] as String? {
+          if let profilePicURL = userInfo["profile_image_url"] as? String? {
             tweet.profileImageURL = profilePicURL
+          }
+          if let profileBackgroundURL = userInfo["profile_background_image_url"] as? String {
+            tweet.profileBackgroundImageURL = profileBackgroundURL
           }
         }
         tweets.append(tweet)
@@ -37,7 +40,7 @@ class TweetJSONParser {
     return tweets
   }
   
-  class func tweetFromJSONData(data: NSData) -> Tweet {
+  class func tweetInfoFromJSONData(data: NSData) -> Tweet {
     var error: NSError?
     let tweet = Tweet()
     
@@ -45,8 +48,13 @@ class TweetJSONParser {
         if let id = tweetInfo["id"] as? Int {
           tweet.id = id
         }
-        if let text = tweetInfo["text"] as? String {
+        if let text = tweetInfo["text"] as? String{
           tweet.text = text
+        }
+        if let retweetedStatus = tweetInfo["retweeted_status"] as? [String: AnyObject] {
+          if let longText = retweetedStatus["text"] as? String {
+            tweet.text = longText
+          }
         }
         if let retweetCount = tweetInfo["retweet_count"] as? Int {
           tweet.retweetCount = retweetCount

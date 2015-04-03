@@ -19,6 +19,8 @@ class Tweet {
   var screenName: String!
   var profileImageURL: String!
   var profileImage: UIImage?
+  var profileBackgroundImageURL: String!
+  var profileBackgroundImage: UIImage?
   
   
   init() {
