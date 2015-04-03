@@ -10,6 +10,18 @@ import UIKit
 
 class ImageService {
   
+  class var sharedService: ImageService {
+    struct Static {
+      static var instance: ImageService?
+    }
+    
+    if Static.instance == nil {
+      Static.instance = ImageService()
+    }
+    
+    return Static.instance!
+  }
+  
   let imageQueue = NSOperationQueue()
   
   func fetchProfileImage(url : String, completionHandler : (UIImage?) ->()) {

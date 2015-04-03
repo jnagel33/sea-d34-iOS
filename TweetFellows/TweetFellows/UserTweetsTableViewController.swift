@@ -21,7 +21,6 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
   var username: String!
   var screenName: String!
   var userTweets = [Tweet]()
-  let imageService = ImageService()
   
     override func viewDidLoad() {
       super.viewDidLoad()
@@ -40,41 +39,63 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
       self.profileImageView.layer.cornerRadius = 8.0
       self.profileImageView.clipsToBounds = true
       
-      LoginService.requestTwitterAccount { (account, error) -> Void in
-        if account != nil {
-          TwitterService.sharedService.twitterAccount = account
-          TwitterService.sharedService.fetchUserTimeline(self.screenName) { (tweets, errorDescription) -> Void in
-            if errorDescription != nil {
-              let alert =  UIAlertController(title: "Error", message: errorDescription, preferredStyle: .Alert)
-              let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-              alert.addAction(action)
-              self.presentViewController(alert, animated: true, completion: nil)
-            }
+      self.refreshControl = UIRefreshControl()
+      self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
+      self.refreshControl!.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+      self.tableView.addSubview(refreshControl!)
+      
+      self.getTweets(nil)
+    }
+  
+  func refresh(sender: AnyObject) {
+    if !userTweets.isEmpty {
+      if let mostRecentTweet = userTweets.first {
+        self.getTweets(["since_id": mostRecentTweet.id])
+      }
+    }
+    self.tableView.reloadData()
+  }
+  
+  func getTweets(parameters: [String: String]?) {
+    LoginService.requestTwitterAccount { (account, error) -> Void in
+      if account != nil {
+        TwitterService.sharedService.twitterAccount = account
+        TwitterService.sharedService.fetchUserTimeline(self.screenName, parameters: parameters) { (tweets, errorDescription) -> Void in
+          if errorDescription != nil {
+            let alert =  UIAlertController(title: "Error", message: errorDescription, preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+          } else {
             if tweets != nil {
-              self.userTweets = tweets!
+              if self.userTweets.isEmpty {
+                self.userTweets = tweets!
+              } else {
+                self.userTweets += tweets!
+              }
               self.tableView.reloadData()
               self.tableView.userInteractionEnabled = true
               if !tweets!.isEmpty {
                 let firstTweet = self.userTweets[0]
-                self.imageService.fetchProfileImage(firstTweet.profileBackgroundImageURL, completionHandler: { [weak self] (image) -> () in
+                ImageService.sharedService.fetchProfileImage(firstTweet.profileBackgroundImageURL, completionHandler: { [weak self] (image) -> () in
                   if self != nil {
                     self!.backgroundImageView.image = image
                   }
                 })
               }
-              self.activityIndicator.stopAnimating()
             }
+            self.activityIndicator.stopAnimating()
+            self.refreshControl!.endRefreshing()
           }
-        } else {
-          let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
-          let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-          alert.addAction(action)
-          self.presentViewController(alert, animated: true, completion: nil)
         }
+      } else {
+        let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
+        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alert.addAction(action)
+        self.presentViewController(alert, animated: true, completion: nil)
       }
-
-
     }
+  }
   
   //MARK:
   //MARK: UITableViewDataSource
@@ -108,7 +129,16 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
     singleTweetContoller.selectedTweet = tweet
     
     navigationController?.pushViewController(singleTweetContoller, animated: true)
-    
+  }
+  
+  override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    var lastId: String?
+    if indexPath.row == userTweets.count - 4 {
+      if let lastTweet = userTweets.last {
+        let param: [String: String] = ["max_id": lastTweet.id]
+        self.getTweets(param)
+      }
+    }
   }
 
 }

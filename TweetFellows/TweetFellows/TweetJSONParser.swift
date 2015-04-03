@@ -17,15 +17,21 @@ class TweetJSONParser {
     if let jsonObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as? [[String: AnyObject]] {
       for object in jsonObject {
         let tweet = Tweet()
-        if let id = object["id"] as? NSNumber {
-          tweet.id = id.integerValue
+        if let id = object["id"] as? Int {
+          tweet.id = "\(id)"
         }
         if let text = object["text"] as? String {
           tweet.text = text
         }
+        if let retweetCount = object["retweet_count"] as? Int {
+          tweet.retweetCount = retweetCount
+        }
         if let userInfo = object["user"] as? [String: AnyObject] {
           if let username = userInfo["name"] as? String {
             tweet.username = username
+          }
+          if let favoriteCount = userInfo["favourites_count"] as? Int {
+            tweet.favoriteCount = favoriteCount
           }
           if let profilePicURL = userInfo["profile_image_url"] as? String? {
             tweet.profileImageURL = profilePicURL
@@ -46,7 +52,7 @@ class TweetJSONParser {
     
     if let tweetInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as? [String: AnyObject] {
         if let id = tweetInfo["id"] as? Int {
-          tweet.id = id
+          tweet.id = "\(id)"
         }
         if let text = tweetInfo["text"] as? String{
           tweet.text = text

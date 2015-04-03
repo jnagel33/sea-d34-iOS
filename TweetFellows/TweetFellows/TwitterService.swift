@@ -34,10 +34,18 @@ class TwitterService {
     
   }
   
-  func fetchHomeTimeline(completionHandler: ([Tweet]?, String?) -> Void) {
+  func fetchHomeTimeline(parameters: [String: String]?, completionHandler: ([Tweet]?, String?) -> Void) {
     let requestURL = NSURL(string: homeTimelineURL)
-    let parameters: [String: AnyObject] = ["count": "100"]
-    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameters)
+    var addedParameters = [String: String]()
+    if let params = parameters {
+      if let maxId = params["max_id"] {
+        addedParameters["max_id"] = maxId
+      }
+      if let sinceId = params["since_id"] {
+        addedParameters["since_id"] = sinceId
+      }
+    }
+    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
     twitterRequest.account = twitterAccount
     
     twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
@@ -59,7 +67,7 @@ class TwitterService {
     }
   }
   
-  func fetchStatuses(id: Int, completionHandler: (Tweet?, String?) -> Void) {
+  func fetchStatuses(id: String, completionHandler: (Tweet?, String?) -> Void) {
     let requestURL = NSURL(string: statusesURL)
     let parameter = ["id": "\(id)"]
     let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameter)
@@ -84,10 +92,18 @@ class TwitterService {
     }
   }
   
-  func fetchUserTimeline(screenName: String, completionHandler: ([Tweet]?, String?) -> Void) {
+  func fetchUserTimeline(screenName: String, parameters: [String: String]?, completionHandler: ([Tweet]?, String?) -> Void) {
     let requestURL = NSURL(string: userTimelineURL)
-    let parameter = ["screen_name": "\(screenName)"]
-    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameter)
+    var addedParameters: [String: String] = ["screen_name": screenName]
+    if let params = parameters {
+      if let maxId = params["max_id"] {
+        addedParameters["max_id"] = maxId
+      }
+      if let sinceId = params["since_id"] {
+        addedParameters["since_id"] = sinceId
+      }
+    }
+    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: addedParameters)
     twitterRequest.account = twitterAccount
     
     twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
@@ -110,7 +126,7 @@ class TwitterService {
 
   }
   
-  func checkStatusCode(statusCode: Int) -> (readyToParse: Bool, errorDescription: String?) {
+  private func checkStatusCode(statusCode: Int) -> (readyToParse: Bool, errorDescription: String?) {
     var readyToParse: Bool = false
     var errorDescription: String? = nil
     switch statusCode {

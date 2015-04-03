@@ -9,12 +9,11 @@
 import UIKit
 
 class Tweet {
-  var id: Int!
+  var id: String!
   var text: String!
   var username: String!
   var retweetCount: Int!
   var favoriteCount: Int!
-  var hashtags: [String]!
   var createdAt: NSDate!
   var screenName: String!
   var profileImageURL: String!

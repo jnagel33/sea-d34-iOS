@@ -21,14 +21,14 @@ class SingleTweetViewController: UIViewController {
   @IBOutlet weak var favoriteCountLabel: UILabel!
   @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   @IBOutlet weak var lineSeperatorView: UIView!
-  @IBOutlet weak var retweetLabel: UILabel!
-  @IBOutlet weak var favoriteLabel: UILabel!
   @IBOutlet weak var createdAtLabel: UILabel!
   
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tweetTextLabel.text = selectedTweet.text
     self.usernameLabel.text = selectedTweet.username
+    self.retweetCountLabel.text = "\(selectedTweet.retweetCount)"
+    self.favoriteCountLabel.text = "\(selectedTweet.favoriteCount)"
     self.profileImageButton.setBackgroundImage(selectedTweet.profileImage, forState: .Normal)
     self.profileImageButton.layer.cornerRadius = 8.0
     self.profileImageButton.clipsToBounds = true
@@ -39,9 +39,7 @@ class SingleTweetViewController: UIViewController {
       self.tweetTextLabel.alpha = 1
       self.usernameLabel.alpha = 1
       self.screenNameLabel.alpha = 1
-      self.retweetLabel.alpha = 1
       self.retweetCountLabel.alpha = 1
-      self.favoriteLabel.alpha = 1
       self.favoriteCountLabel.alpha = 1
       self.lineSeperatorView.alpha = 1
       self.profileImageButton.alpha = 1
@@ -76,7 +74,6 @@ class SingleTweetViewController: UIViewController {
     self.screenNameLabel.text = tweet.screenName
     self.retweetCountLabel.text = "\(tweet.retweetCount)"
     self.favoriteCountLabel.text = "\(tweet.favoriteCount)"
-    
     let formatter = NSDateFormatter()
     formatter.dateStyle = NSDateFormatterStyle.LongStyle
     formatter.timeStyle = .MediumStyle
