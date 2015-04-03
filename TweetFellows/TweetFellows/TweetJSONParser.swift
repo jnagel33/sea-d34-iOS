@@ -27,6 +27,9 @@ class TweetJSONParser {
           if let username = userInfo["name"] as? String {
             tweet.username = username
           }
+          if let profilePicURL = userInfo["profile_image_url"] as String? {
+            tweet.profileImageURL = profilePicURL
+          }
         }
         tweets.append(tweet)
       }
@@ -39,25 +42,14 @@ class TweetJSONParser {
     let tweet = Tweet()
     
     if let tweetInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as? [String: AnyObject] {
-        if let id = tweetInfo["id"] as? NSNumber {
-          tweet.id = id.integerValue
+        if let id = tweetInfo["id"] as? Int {
+          tweet.id = id
         }
         if let text = tweetInfo["text"] as? String {
           tweet.text = text
         }
-        tweet.hashtags = [String]()
-        if let entities = tweetInfo["entities"] as? [String: AnyObject] {
-          if let hashtagInfo = entities["hashtags"] as? [[String: AnyObject]] {
-            for hashtag in hashtagInfo {
-              if let hashtag = hashtag["text"] as? String {
-                tweet.hashtags!.append(hashtag)
-              }
-            }
-          }
-        }
-      
-        if let retweetCount = tweetInfo["retweet_count"] as? NSNumber {
-          tweet.retweetCount = retweetCount.integerValue
+        if let retweetCount = tweetInfo["retweet_count"] as? Int {
+          tweet.retweetCount = retweetCount
         }
         if let createdAt = tweetInfo["created_at"] as? String {
           var dateFormatter = NSDateFormatter()
@@ -65,22 +57,16 @@ class TweetJSONParser {
           if let date = dateFormatter.dateFromString(createdAt) {
             tweet.createdAt = date
           }
-          if let userInfo = tweetInfo["user"] as? [String: AnyObject] {
-            if let username = userInfo["name"] as? String {
-              tweet.username = username
-            }
-            if let screenName = userInfo["screen_name"] as? String {
-              tweet.screenName = screenName
-            }
-            if let favoriteCount = userInfo["favourites_count"] as? NSNumber {
-              tweet.favoriteCount = favoriteCount.integerValue
-            }
-            if let profilePicURLText = userInfo["profile_image_url"] as String? {
-              if let imgURL = NSURL(string: profilePicURLText) {
-                var imgData = NSData(contentsOfURL: imgURL)
-                tweet.profilePic = imgData
-              }
-            }
+        }
+        if let userInfo = tweetInfo["user"] as? [String: AnyObject] {
+          if let username = userInfo["name"] as? String {
+            tweet.username = username
+          }
+          if let screenName = userInfo["screen_name"] as? String {
+            tweet.screenName = screenName
+          }
+          if let favoriteCount = userInfo["favourites_count"] as? Int {
+            tweet.favoriteCount = favoriteCount
           }
         }
       }

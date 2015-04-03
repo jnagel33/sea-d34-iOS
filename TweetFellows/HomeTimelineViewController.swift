@@ -14,15 +14,17 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   
-  let twitterService = TwitterService()
-  
   var tweets = [Tweet]()
+  
+  let imageService = ImageService()
   
     override func viewDidLoad() {
       super.viewDidLoad()
       
       self.tableView.dataSource = self
       self.tableView.delegate = self
+      let cellNib = UINib(nibName: "TweetTableViewCell", bundle: NSBundle.mainBundle())
+      self.tableView.registerNib(cellNib, forCellReuseIdentifier: "TweetCell")
       self.activityIndicator.startAnimating()
       self.tableView.userInteractionEnabled = false
       self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -35,8 +37,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       
       LoginService.requestTwitterAccount { (account, error) -> Void in
         if account != nil {
-          self.twitterService.twitterAccount = account
-          self.twitterService.fetchHomeTimeline({ (tweets, errorDescription) -> Void in
+          TwitterService.sharedService.twitterAccount = account
+          TwitterService.sharedService.fetchHomeTimeline({ (tweets, errorDescription) -> Void in
             if errorDescription != nil {
               let alert =  UIAlertController(title: "Error", message: errorDescription, preferredStyle: .Alert)
               let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
@@ -68,12 +70,31 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
+    cell.tag++
+    let tag = cell.tag
     cell.textLabel?.text = nil
     cell.usernameLabel?.text = nil
+    cell.imageView?.image = nil
     let tweet = tweets[indexPath.row]
+    cell.tweetLabel.text = tweet.text
     cell.usernameLabel.text = tweet.username
-    cell.tweetTextLabel.text = tweet.text
-    
+    cell.profileImage.image = tweet.profileImage
+      
+    if let image = tweet.profileImage {
+      cell.profileImage.image = image
+    } else {
+        
+      self.imageService.fetchProfileImage(tweet.profileImageURL, completionHandler: { [weak self] (image) -> () in
+        if self != nil {
+          tweet.profileImage = image
+          if tag == cell.tag {
+            cell.profileImage.image = tweet.profileImage
+          }
+        }
+      })
+        
+      }
+    cell.layoutIfNeeded()
     return cell
   }
   
@@ -82,11 +103,14 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    
     let tweet = tweets[indexPath.row]
     let singleTweetContoller = SingleTweetViewController(nibName: "SingleTweetView", bundle: nil)
     singleTweetContoller.tweetId = tweet.id
     singleTweetContoller.tweetText = tweet.text
     singleTweetContoller.tweetUsername = tweet.username
+    singleTweetContoller.tweetProfileImage = tweet.profileImage
+    
     navigationController?.pushViewController(singleTweetContoller, animated: true)
   }
 }

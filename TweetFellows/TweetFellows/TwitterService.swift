@@ -11,6 +11,19 @@ import Social
 import Accounts
 
 class TwitterService {
+  
+  class var sharedService: TwitterService {
+    struct Static {
+      static var instance: TwitterService?
+    }
+    
+    if Static.instance == nil {
+      Static.instance = TwitterService()
+    }
+    
+    return Static.instance!
+  }
+
   var twitterAccount: ACAccount?
   let homeTimelineURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
   let statusesURL = "https://api.twitter.com/1.1/statuses/show.json"
