@@ -101,6 +101,9 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     cell.textLabel?.text = nil
     cell.usernameLabel?.text = nil
     cell.imageView?.image = nil
+    cell.retweetCountLabel.text = nil
+    cell.favoritesCountLabel.text = nil
+    
     let tweet = tweets[indexPath.row]
     cell.tweetLabel.text = tweet.text
     cell.usernameLabel.text = tweet.username
@@ -136,9 +139,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     
     let tweet = tweets[indexPath.row]
     let singleTweetContoller = self.storyboard?.instantiateViewControllerWithIdentifier("SingleTweetViewController") as SingleTweetViewController
-    
     singleTweetContoller.selectedTweet = tweet
-    
     navigationController?.pushViewController(singleTweetContoller, animated: true)
   }
   

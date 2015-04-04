@@ -25,6 +25,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
     override func viewDidLoad() {
       super.viewDidLoad()
       self.activityIndicator.startAnimating()
+      self.tableView.userInteractionEnabled = false
       self.tableView.delegate = self
       self.tableView.dataSource = self
       self.tableView.estimatedRowHeight = 160
@@ -43,7 +44,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
       self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
       self.refreshControl!.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
       self.tableView.addSubview(refreshControl!)
-      
+      self.tableView.contentInset = UIEdgeInsets(top: 144, left: 0 ,bottom: 0 , right: 0)
       self.getTweets(nil)
     }
   
@@ -54,6 +55,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
       }
     }
     self.tableView.reloadData()
+    //self.tableView.contentInset = UIEdgeInsets(top: 64	, left: 0 ,bottom: 0 , right: 0)
   }
   
   func getTweets(parameters: [String: String]?) {
@@ -86,6 +88,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
             }
             self.activityIndicator.stopAnimating()
             self.refreshControl!.endRefreshing()
+            self.tableView.userInteractionEnabled = true
           }
         }
       } else {
@@ -110,11 +113,15 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
     cell.usernameLabel.text = nil
     cell.tweetLabel.text = nil
     cell.profileImage.image = nil
+    cell.retweetCountLabel.text = nil
+    cell.favoritesCountLabel.text = nil
     
     let tweet = userTweets[indexPath.row]
     cell.usernameLabel.text = tweet.username
     cell.tweetLabel.text = tweet.text
     cell.profileImage.image = profileImage
+    cell.retweetCountLabel.text = "\(tweet.retweetCount)"
+    cell.favoritesCountLabel.text = "\(tweet.favoriteCount)"
     
     return cell
   }

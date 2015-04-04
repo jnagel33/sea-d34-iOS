@@ -26,6 +26,14 @@ class TweetJSONParser {
         if let retweetCount = object["retweet_count"] as? Int {
           tweet.retweetCount = retweetCount
         }
+        if let retweetedStatus = object["retweeted_status"] as? [String: AnyObject] {
+          if let longText = retweetedStatus["text"] as? String {
+            tweet.text = longText
+          }
+          if let id = retweetedStatus["id"] as? Int {
+            tweet.id = "\(id)"
+          }
+        }
         if let userInfo = object["user"] as? [String: AnyObject] {
           if let username = userInfo["name"] as? String {
             tweet.username = username
@@ -60,6 +68,9 @@ class TweetJSONParser {
         if let retweetedStatus = tweetInfo["retweeted_status"] as? [String: AnyObject] {
           if let longText = retweetedStatus["text"] as? String {
             tweet.text = longText
+          }
+          if let id = retweetedStatus["id"] as? Int {
+            tweet.id = "\(id)"
           }
         }
         if let retweetCount = tweetInfo["retweet_count"] as? Int {
