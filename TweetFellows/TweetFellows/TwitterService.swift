@@ -45,7 +45,7 @@ class TwitterService {
         addedParameters["since_id"] = sinceId
       }
     }
-    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
+    let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: addedParameters)
     twitterRequest.account = twitterAccount
     
     twitterRequest.performRequestWithHandler { (data, response, error) -> Void in
@@ -67,7 +67,7 @@ class TwitterService {
     }
   }
   
-  func fetchStatuses(id: String, completionHandler: (Tweet?, String?) -> Void) {
+  func fetchTweetInfo(id: String, completionHandler: (Tweet?, String?) -> Void) {
     let requestURL = NSURL(string: statusesURL)
     let parameter = ["id": "\(id)"]
     let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: parameter)

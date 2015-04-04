@@ -10,6 +10,7 @@ import UIKit
 
 class Tweet {
   var id: String!
+  var retweetedId: String!
   var text: String!
   var username: String!
   var retweetCount: Int!

@@ -27,11 +27,8 @@ class TweetJSONParser {
           tweet.retweetCount = retweetCount
         }
         if let retweetedStatus = object["retweeted_status"] as? [String: AnyObject] {
-          if let longText = retweetedStatus["text"] as? String {
-            tweet.text = longText
-          }
           if let id = retweetedStatus["id"] as? Int {
-            tweet.id = "\(id)"
+            tweet.retweetedId = "\(id)"
           }
         }
         if let userInfo = object["user"] as? [String: AnyObject] {
@@ -66,11 +63,8 @@ class TweetJSONParser {
           tweet.text = text
         }
         if let retweetedStatus = tweetInfo["retweeted_status"] as? [String: AnyObject] {
-          if let longText = retweetedStatus["text"] as? String {
-            tweet.text = longText
-          }
           if let id = retweetedStatus["id"] as? Int {
-            tweet.id = "\(id)"
+            tweet.retweetedId = "\(id)"
           }
         }
         if let retweetCount = tweetInfo["retweet_count"] as? Int {
@@ -92,6 +86,12 @@ class TweetJSONParser {
           }
           if let favoriteCount = userInfo["favourites_count"] as? Int {
             tweet.favoriteCount = favoriteCount
+          }
+          if let profilePicURL = userInfo["profile_image_url"] as? String? {
+            tweet.profileImageURL = profilePicURL
+          }
+          if let profileBackgroundURL = userInfo["profile_background_image_url"] as? String {
+            tweet.profileBackgroundImageURL = profileBackgroundURL
           }
         }
       }

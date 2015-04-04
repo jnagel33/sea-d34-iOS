@@ -50,8 +50,14 @@ class SingleTweetViewController: UIViewController {
     
     LoginService.requestTwitterAccount { (account, error) -> Void in
       if account != nil {
+        var id: String
+        if self.selectedTweet.retweetedId != nil {
+          id = self.selectedTweet.retweetedId
+        } else {
+          id = self.selectedTweet.id
+        }
         TwitterService.sharedService.twitterAccount = account
-        TwitterService.sharedService.fetchStatuses(self.selectedTweet.id!) { (tweet, errorDescription) -> Void in
+        TwitterService.sharedService.fetchTweetInfo(id) { (tweet, errorDescription) -> Void in
           if errorDescription != nil {
             let alert =  UIAlertController(title: "Error", message: errorDescription, preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
@@ -60,6 +66,12 @@ class SingleTweetViewController: UIViewController {
           } else {
             if let tweetSelected = tweet {
               self.selectedTweet.screenName = tweetSelected.screenName
+              self.selectedTweet.retweetedId = tweetSelected.retweetedId
+              self.selectedTweet.username = tweetSelected.username
+              self.selectedTweet.id = tweetSelected.id
+              self.selectedTweet.profileImageURL = tweetSelected.profileImageURL
+              self.selectedTweet.retweetCount = tweetSelected.retweetCount
+              self.selectedTweet.favoriteCount = tweetSelected.favoriteCount
               self.configureTweet(tweetSelected)
             }
           }
@@ -71,6 +83,7 @@ class SingleTweetViewController: UIViewController {
   func configureTweet(tweet: Tweet) {
     self.activityIndicator.stopAnimating()
     self.tweetTextLabel.text = tweet.text
+    self.usernameLabel.text = tweet.username
     self.screenNameLabel.text = tweet.screenName
     self.retweetCountLabel.text = "\(tweet.retweetCount)"
     self.favoriteCountLabel.text = "\(tweet.favoriteCount)"

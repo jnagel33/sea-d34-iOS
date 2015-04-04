@@ -64,15 +64,15 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
             self.presentViewController(alert, animated: true, completion: nil)
           } else {
             if tweets != nil {
-            if self.tweets.isEmpty {
-              self.tweets = tweets!
-            } else {
-              self.tweets += tweets!
-            }
-            self.tableView.reloadData()
-            UIView.animateWithDuration(1.0, animations: { () -> Void in
-              self.tableView.userInteractionEnabled = true
-            })
+              if self.tweets.isEmpty {
+                self.tweets = tweets!
+              } else {
+                self.tweets += tweets!
+              }
+              self.tableView.reloadData()
+              UIView.animateWithDuration(1.0, animations: { () -> Void in
+                  self.tableView.userInteractionEnabled = true
+              })
             }
             self.activityIndicator.stopAnimating()
             self.refreshControl.endRefreshing()
@@ -80,12 +80,12 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         }
       } else {
         let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
-        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-        alert.addAction(action)
-        self.presentViewController(alert, animated: true, completion: nil)
+          let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+          alert.addAction(action)
+          self.presentViewController(alert, animated: true, completion: nil)
+          }
+        }
       }
-    }
-  }
 
   //MARK:
   //MARK: UITableViewDataSource
