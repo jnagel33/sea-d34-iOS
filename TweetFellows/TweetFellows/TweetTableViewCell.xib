@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D113c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D130a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -42,17 +42,17 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rCount" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l5X-dQ-Yae">
                         <rect key="frame" x="56" y="74" width="41" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="fCount" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1P-na-8aa">
-                        <rect key="frame" x="127" y="74" width="40.5" height="16"/>
+                        <rect key="frame" x="140" y="74" width="40.5" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="Cev-qv-33q">
-                        <rect key="frame" x="170.5" y="70" width="20" height="20"/>
+                        <rect key="frame" x="183.5" y="70" width="20" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="VZp-LB-8Se"/>
                             <constraint firstAttribute="width" constant="20" id="iqB-p5-he3"/>
@@ -64,7 +64,7 @@
                     <constraint firstAttribute="bottomMargin" secondItem="l5X-dQ-Yae" secondAttribute="bottom" constant="-0.5" id="4nW-Er-FaQ"/>
                     <constraint firstItem="Kyc-Vs-llg" firstAttribute="top" secondItem="Q2f-Ml-nJt" secondAttribute="bottom" constant="8" id="82w-FJ-l00"/>
                     <constraint firstItem="Cev-qv-33q" firstAttribute="leading" secondItem="g1P-na-8aa" secondAttribute="trailing" constant="3" id="AHj-e1-9D3"/>
-                    <constraint firstItem="g1P-na-8aa" firstAttribute="leading" secondItem="xWx-ij-RSw" secondAttribute="trailing" constant="7" id="AIa-DD-GlZ"/>
+                    <constraint firstItem="g1P-na-8aa" firstAttribute="leading" secondItem="xWx-ij-RSw" secondAttribute="trailing" constant="20" id="AIa-DD-GlZ"/>
                     <constraint firstItem="xWx-ij-RSw" firstAttribute="top" secondItem="Kyc-Vs-llg" secondAttribute="bottom" constant="5.5" id="DnN-PI-NK9"/>
                     <constraint firstItem="Q2f-Ml-nJt" firstAttribute="top" secondItem="Acc-C8-8Tl" secondAttribute="topMargin" id="EbM-bD-WWM"/>
                     <constraint firstItem="l5X-dQ-Yae" firstAttribute="leading" secondItem="Kyc-Vs-llg" secondAttribute="leading" id="FO9-L8-GfU"/>

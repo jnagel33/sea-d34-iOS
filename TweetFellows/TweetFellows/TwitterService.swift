@@ -16,11 +16,9 @@ class TwitterService {
     struct Static {
       static var instance: TwitterService?
     }
-    
     if Static.instance == nil {
       Static.instance = TwitterService()
     }
-    
     return Static.instance!
   }
 
@@ -30,9 +28,7 @@ class TwitterService {
   let userTimelineURL = "https://api.twitter.com/1.1/statuses/user_timeline.json"
   
   
-  init() {
-    
-  }
+  init() {}
   
   func fetchHomeTimeline(parameters: [String: String]?, completionHandler: ([Tweet]?, String?) -> Void) {
     let requestURL = NSURL(string: homeTimelineURL)
@@ -123,7 +119,6 @@ class TwitterService {
         completionHandler(tweets, errorDescription)
       })
     }
-
   }
   
   private func checkStatusCode(statusCode: Int) -> (readyToParse: Bool, errorDescription: String?) {

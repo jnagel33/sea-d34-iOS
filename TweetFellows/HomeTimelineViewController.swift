@@ -42,14 +42,14 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       self.getTweets(nil)
   }
   
-  func refresh(sender:AnyObject)
-  {
-    if !tweets.isEmpty {
-      if let mostRecentTweet = tweets.first {
+  func refresh(sender:AnyObject) {
+    if !self.tweets.isEmpty {
+      if let mostRecentTweet = self.tweets.first {
         self.getTweets(["since_id": mostRecentTweet.id])
       }
     }
     self.tableView.reloadData()
+    self.refreshControl.endRefreshing()
   }
   
   func getTweets(parameters: [String: String]?) {
@@ -85,13 +85,17 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   func checkForRetweets() {
     LoginService.requestTwitterAccount { (account, error) -> Void in
       if account != nil {
-        
       for (index, tweet) in enumerate(self.tweets) {
         if self.tweets[index].retweetedId != nil {
           if account != nil {
             TwitterService.sharedService.twitterAccount = account
             TwitterService.sharedService.fetchTweetInfo(self.tweets[index].retweetedId, completionHandler: { (tweet, error) -> Void in
               self.tweets[index] = tweet!
+              self.tableView.reloadData()
+              self.activityIndicator.stopAnimating()
+              UIView.animateWithDuration(1.0, animations: { () -> Void in
+                self.tableView.userInteractionEnabled = true
+              })
             })
           }
         }
@@ -102,21 +106,14 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
       alert.addAction(action)
       self.presentViewController(alert, animated: true, completion: nil)
     }
-      self.tableView.reloadData()
-      self.activityIndicator.stopAnimating()
-      self.refreshControl.endRefreshing()
-      UIView.animateWithDuration(1.0, animations: { () -> Void in
-        self.tableView.userInteractionEnabled = true
-      })
-    }
-
   }
+}
 
   //MARK:
   //MARK: UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return tweets.count
+      return self.tweets.count
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -129,7 +126,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     cell.retweetCountLabel.text = nil
     cell.favoritesCountLabel.text = nil
     
-    let tweet = tweets[indexPath.row]
+    let tweet = self.tweets[indexPath.row]
     cell.tweetLabel.text = tweet.text
     cell.usernameLabel.text = tweet.username
     cell.retweetCountLabel.text = "\(tweet.retweetCount)"
@@ -139,7 +136,6 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     if let image = tweet.profileImage {
       cell.profileImage.image = image
     } else {
-        
       ImageService.sharedService.fetchProfileImage(tweet.profileImageURL, completionHandler: { [weak self] (image) -> () in
         if self != nil {
           tweet.profileImage = image
@@ -161,7 +157,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
     
-    let tweet = tweets[indexPath.row]
+    let tweet = self.tweets[indexPath.row]
     let singleTweetContoller = self.storyboard?.instantiateViewControllerWithIdentifier("SingleTweetViewController") as SingleTweetViewController
     singleTweetContoller.selectedTweet = tweet
     navigationController?.pushViewController(singleTweetContoller, animated: true)
@@ -170,12 +166,11 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
   func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
     var lastId: String?
-    if indexPath.row == tweets.count - 4 {
-      if let lastTweet = tweets.last {
+    if indexPath.row == self.tweets.count - 4 {
+      if let lastTweet = self.tweets.last {
         let param: [String: String] = ["max_id": lastTweet.id]
         self.getTweets(param)
       }
     }
-
   }
 }

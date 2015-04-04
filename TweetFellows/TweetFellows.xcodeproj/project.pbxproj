@@ -12,7 +12,6 @@
 		43B1DD021AC9E48D0004B835 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1DD011AC9E48D0004B835 /* AppDelegate.swift */; };
 		43B1DD071AC9E48D0004B835 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43B1DD051AC9E48D0004B835 /* Main.storyboard */; };
 		43B1DD091AC9E48D0004B835 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43B1DD081AC9E48D0004B835 /* Images.xcassets */; };
-		43B1DD0C1AC9E48D0004B835 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B1DD0A1AC9E48D0004B835 /* LaunchScreen.xib */; };
 		43B1DD181AC9E48D0004B835 /* TweetFellowsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1DD171AC9E48D0004B835 /* TweetFellowsTests.swift */; };
 		43B1DD271ACA14490004B835 /* HomeTimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1DD261ACA14490004B835 /* HomeTimelineViewController.swift */; };
 		43B1DD291ACA14C70004B835 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1DD281ACA14C70004B835 /* Tweet.swift */; };
@@ -42,7 +41,6 @@
 		43B1DD011AC9E48D0004B835 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43B1DD061AC9E48D0004B835 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43B1DD081AC9E48D0004B835 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		43B1DD0B1AC9E48D0004B835 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		43B1DD111AC9E48D0004B835 /* TweetFellowsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TweetFellowsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1DD161AC9E48D0004B835 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43B1DD171AC9E48D0004B835 /* TweetFellowsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetFellowsTests.swift; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 				43DDC90A1ACE1131002C3A3A /* TweetTableViewCell.xib */,
 				43DDC90C1ACE1420002C3A3A /* TweetTableViewCell.swift */,
 				43B1DD081AC9E48D0004B835 /* Images.xcassets */,
-				43B1DD0A1AC9E48D0004B835 /* LaunchScreen.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -245,7 +242,6 @@
 			files = (
 				43B1DD071AC9E48D0004B835 /* Main.storyboard in Resources */,
 				43DDC90B1ACE1131002C3A3A /* TweetTableViewCell.xib in Resources */,
-				43B1DD0C1AC9E48D0004B835 /* LaunchScreen.xib in Resources */,
 				43B1DD091AC9E48D0004B835 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,14 +298,6 @@
 				43B1DD061AC9E48D0004B835 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		43B1DD0A1AC9E48D0004B835 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				43B1DD0B1AC9E48D0004B835 /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -25,17 +25,17 @@ class SingleTweetViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.tweetTextLabel.text = selectedTweet.text
-    self.usernameLabel.text = selectedTweet.username
-    self.screenNameLabel.text = selectedTweet.screenName
-    self.retweetCountLabel.text = "\(selectedTweet.retweetCount)"
-    self.favoriteCountLabel.text = "\(selectedTweet.favoriteCount)"
-    self.profileImageButton.setBackgroundImage(selectedTweet.profileImage, forState: .Normal)
+    self.tweetTextLabel.text = self.selectedTweet.text
+    self.usernameLabel.text = self.selectedTweet.username
+    self.screenNameLabel.text = self.selectedTweet.screenName
+    self.retweetCountLabel.text = "\(self.selectedTweet.retweetCount)"
+    self.favoriteCountLabel.text = "\(self.selectedTweet.favoriteCount)"
+    self.profileImageButton.setBackgroundImage(self.selectedTweet.profileImage, forState: .Normal)
     
     let dateFormatter = NSDateFormatter()
     dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
     dateFormatter.timeStyle = .MediumStyle
-    self.createdAtLabel.text = dateFormatter.stringFromDate(selectedTweet.createdAt)
+    self.createdAtLabel.text = dateFormatter.stringFromDate(self.selectedTweet.createdAt)
     
     self.profileImageButton.layer.cornerRadius = 8.0
     self.profileImageButton.clipsToBounds = true
@@ -44,9 +44,9 @@ class SingleTweetViewController: UIViewController {
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "UserTweets" {
       let destinationController = segue.destinationViewController as UserTweetsTableViewController
-      destinationController.username = selectedTweet.username
-      destinationController.screenName = selectedTweet.screenName
-      destinationController.profileImage = selectedTweet.profileImage
+      destinationController.username = self.selectedTweet.username
+      destinationController.screenName = self.selectedTweet.screenName
+      destinationController.profileImage = self.selectedTweet.profileImage
     }
   }
 }

@@ -14,11 +14,9 @@ class ImageService {
     struct Static {
       static var instance: ImageService?
     }
-    
     if Static.instance == nil {
       Static.instance = ImageService()
     }
-    
     return Static.instance!
   }
   
@@ -32,11 +30,9 @@ class ImageService {
             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
               completionHandler(image)
             })
-            
           }
         }
       }
     }
-    //download the image
   }
 }

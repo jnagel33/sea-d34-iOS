@@ -34,9 +34,9 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
       let cellNib = UINib(nibName: "TweetTableViewCell", bundle: NSBundle.mainBundle())
       self.tableView.registerNib(cellNib, forCellReuseIdentifier: "TweetCell")
   
-      self.usernameLabel.text = username
-      self.screenNameLabel.text = screenName
-      self.profileImageView.image = profileImage
+      self.usernameLabel.text = self.username
+      self.screenNameLabel.text = self.screenName
+      self.profileImageView.image = self.profileImage
       self.profileImageView.layer.cornerRadius = 8.0
       self.profileImageView.clipsToBounds = true
       
@@ -50,7 +50,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
   
   func refresh(sender: AnyObject) {
     if !userTweets.isEmpty {
-      if let mostRecentTweet = userTweets.first {
+      if let mostRecentTweet = self.userTweets.first {
         self.getTweets(["since_id": mostRecentTweet.id])
       }
     }
@@ -74,8 +74,6 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
               } else {
                 self.userTweets += tweets!
               }
-              self.tableView.reloadData()
-              self.tableView.userInteractionEnabled = true
               if !tweets!.isEmpty {
                 let firstTweet = self.userTweets[0]
                 ImageService.sharedService.fetchProfileImage(firstTweet.profileBackgroundImageURL, completionHandler: { [weak self] (image) -> () in
@@ -85,9 +83,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
                 })
               }
             }
-            self.activityIndicator.stopAnimating()
-            self.refreshControl!.endRefreshing()
-            self.tableView.userInteractionEnabled = true
+            self.checkForRetweets()
           }
         }
       } else {
@@ -99,29 +95,67 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
     }
   }
   
+  func checkForRetweets() {
+    LoginService.requestTwitterAccount { (account, error) -> Void in
+      for (index, tweet) in enumerate(self.userTweets) {
+        if self.userTweets[index].retweetedId != nil {
+          if account != nil {
+            TwitterService.sharedService.twitterAccount = account
+            TwitterService.sharedService.fetchTweetInfo(self.userTweets[index].retweetedId, completionHandler: { (tweet, error) -> Void in
+              self.userTweets[index] = tweet!
+              self.tableView.reloadData()
+              self.activityIndicator.stopAnimating()
+              self.refreshControl!.endRefreshing()
+              UIView.animateWithDuration(1.0, animations: { () -> Void in
+                self.tableView.userInteractionEnabled = true
+              })
+            })
+          } else {
+            let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+          }
+        }
+      }
+    }
+  }
+  
   //MARK:
   //MARK: UITableViewDataSource
 
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return userTweets.count
+      return self.userTweets.count
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
     
+    cell.tag++
+    let tag = cell.tag
     cell.usernameLabel.text = nil
     cell.tweetLabel.text = nil
     cell.profileImage.image = nil
     cell.retweetCountLabel.text = nil
     cell.favoritesCountLabel.text = nil
     
-    let tweet = userTweets[indexPath.row]
+    let tweet = self.userTweets[indexPath.row]
     cell.usernameLabel.text = tweet.username
     cell.tweetLabel.text = tweet.text
-    cell.profileImage.image = profileImage
     cell.retweetCountLabel.text = "\(tweet.retweetCount)"
     cell.favoritesCountLabel.text = "\(tweet.favoriteCount)"
     
+    ImageService.sharedService.fetchProfileImage(tweet.profileImageURL, completionHandler: { [weak self] (image) -> () in
+      if self != nil {
+        tweet.profileImage = image
+        if tag == cell.tag {
+          cell.profileImage.image = tweet.profileImage
+          cell.profileImage.layer.cornerRadius = 8.0
+          cell.profileImage.clipsToBounds = true
+        }
+      }
+    })
+    cell.layoutIfNeeded()
     return cell
   }
 
@@ -129,11 +163,9 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
   //MARK: UITableViewDelegate
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let tweet = userTweets[indexPath.row]
+    let tweet = self.userTweets[indexPath.row]
     let singleTweetContoller = self.storyboard?.instantiateViewControllerWithIdentifier("SingleTweetViewController") as SingleTweetViewController
-    tweet.profileImage = self.profileImage
     singleTweetContoller.selectedTweet = tweet
-    
     navigationController?.pushViewController(singleTweetContoller, animated: true)
   }
   
@@ -146,5 +178,4 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
       }
     }
   }
-
 }
