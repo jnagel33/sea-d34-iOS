@@ -36,7 +36,7 @@ class TwitterService {
   
   func fetchHomeTimeline(parameters: [String: String]?, completionHandler: ([Tweet]?, String?) -> Void) {
     let requestURL = NSURL(string: homeTimelineURL)
-    var addedParameters = [String: String]()
+    var addedParameters = ["count":"20"]
     if let params = parameters {
       if let maxId = params["max_id"] {
         addedParameters["max_id"] = maxId
@@ -81,7 +81,7 @@ class TwitterService {
       } else {
         let status = self.checkStatusCode(response.statusCode)
         if status.readyToParse {
-          tweet = TweetJSONParser.tweetInfoFromJSONData(data)
+          tweet = TweetJSONParser.tweetFromJSONData(data)
         } else {
           errorDescription = status.errorDescription
         }

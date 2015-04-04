@@ -55,7 +55,6 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
       }
     }
     self.tableView.reloadData()
-    //self.tableView.contentInset = UIEdgeInsets(top: 64	, left: 0 ,bottom: 0 , right: 0)
   }
   
   func getTweets(parameters: [String: String]?) {

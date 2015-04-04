@@ -69,13 +69,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
               } else {
                 self.tweets += tweets!
               }
-              self.tableView.reloadData()
-              UIView.animateWithDuration(1.0, animations: { () -> Void in
-                  self.tableView.userInteractionEnabled = true
-              })
             }
-            self.activityIndicator.stopAnimating()
-            self.refreshControl.endRefreshing()
+            self.checkForRetweets()
           }
         }
       } else {
@@ -83,9 +78,39 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
           let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
           alert.addAction(action)
           self.presentViewController(alert, animated: true, completion: nil)
+      }
+    }
+  }
+  
+  func checkForRetweets() {
+    LoginService.requestTwitterAccount { (account, error) -> Void in
+      if account != nil {
+        
+      for (index, tweet) in enumerate(self.tweets) {
+        if self.tweets[index].retweetedId != nil {
+          if account != nil {
+            TwitterService.sharedService.twitterAccount = account
+            TwitterService.sharedService.fetchTweetInfo(self.tweets[index].retweetedId, completionHandler: { (tweet, error) -> Void in
+              self.tweets[index] = tweet!
+            })
           }
         }
       }
+    } else {
+      let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
+      let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+      alert.addAction(action)
+      self.presentViewController(alert, animated: true, completion: nil)
+    }
+      self.tableView.reloadData()
+      self.activityIndicator.stopAnimating()
+      self.refreshControl.endRefreshing()
+      UIView.animateWithDuration(1.0, animations: { () -> Void in
+        self.tableView.userInteractionEnabled = true
+      })
+    }
+
+  }
 
   //MARK:
   //MARK: UITableViewDataSource
@@ -125,7 +150,6 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
           }
         }
       })
-        
     }
     cell.layoutIfNeeded()
     return cell

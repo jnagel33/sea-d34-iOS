@@ -27,71 +27,18 @@ class SingleTweetViewController: UIViewController {
     super.viewDidLoad()
     self.tweetTextLabel.text = selectedTweet.text
     self.usernameLabel.text = selectedTweet.username
+    self.screenNameLabel.text = selectedTweet.screenName
     self.retweetCountLabel.text = "\(selectedTweet.retweetCount)"
     self.favoriteCountLabel.text = "\(selectedTweet.favoriteCount)"
     self.profileImageButton.setBackgroundImage(selectedTweet.profileImage, forState: .Normal)
+    
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
+    dateFormatter.timeStyle = .MediumStyle
+    self.createdAtLabel.text = dateFormatter.stringFromDate(selectedTweet.createdAt)
+    
     self.profileImageButton.layer.cornerRadius = 8.0
     self.profileImageButton.clipsToBounds = true
-    self.activityIndicator.startAnimating()
-    
-    
-    UIView.animateWithDuration(1.5, animations: { () -> Void in
-      self.tweetTextLabel.alpha = 1
-      self.usernameLabel.alpha = 1
-      self.screenNameLabel.alpha = 1
-      self.retweetCountLabel.alpha = 1
-      self.favoriteCountLabel.alpha = 1
-      self.lineSeperatorView.alpha = 1
-      self.profileImageButton.alpha = 1
-      self.createdAtLabel.alpha = 1
-    })
-    
-    
-    
-    LoginService.requestTwitterAccount { (account, error) -> Void in
-      if account != nil {
-        var id: String
-        if self.selectedTweet.retweetedId != nil {
-          id = self.selectedTweet.retweetedId
-        } else {
-          id = self.selectedTweet.id
-        }
-        TwitterService.sharedService.twitterAccount = account
-        TwitterService.sharedService.fetchTweetInfo(id) { (tweet, errorDescription) -> Void in
-          if errorDescription != nil {
-            let alert =  UIAlertController(title: "Error", message: errorDescription, preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-            alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
-          } else {
-            if let tweetSelected = tweet {
-              self.selectedTweet.screenName = tweetSelected.screenName
-              self.selectedTweet.retweetedId = tweetSelected.retweetedId
-              self.selectedTweet.username = tweetSelected.username
-              self.selectedTweet.id = tweetSelected.id
-              self.selectedTweet.profileImageURL = tweetSelected.profileImageURL
-              self.selectedTweet.retweetCount = tweetSelected.retweetCount
-              self.selectedTweet.favoriteCount = tweetSelected.favoriteCount
-              self.configureTweet(tweetSelected)
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  func configureTweet(tweet: Tweet) {
-    self.activityIndicator.stopAnimating()
-    self.tweetTextLabel.text = tweet.text
-    self.usernameLabel.text = tweet.username
-    self.screenNameLabel.text = tweet.screenName
-    self.retweetCountLabel.text = "\(tweet.retweetCount)"
-    self.favoriteCountLabel.text = "\(tweet.favoriteCount)"
-    let formatter = NSDateFormatter()
-    formatter.dateStyle = NSDateFormatterStyle.LongStyle
-    formatter.timeStyle = .MediumStyle
-    let dateString = formatter.stringFromDate(tweet.createdAt)
-    self.createdAtLabel.text = dateString
   }
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

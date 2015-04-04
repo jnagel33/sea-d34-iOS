@@ -15,47 +15,29 @@ class TweetJSONParser {
     var error: NSError?
     
     if let jsonObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as? [[String: AnyObject]] {
-      for object in jsonObject {
-        let tweet = Tweet()
-        if let id = object["id"] as? Int {
-          tweet.id = "\(id)"
+      if error == nil {
+        for tweetInfo in jsonObject {
+          let tweet = self.tweetFromTweetInfo(tweetInfo)
+          tweets.append(tweet)
         }
-        if let text = object["text"] as? String {
-          tweet.text = text
-        }
-        if let retweetCount = object["retweet_count"] as? Int {
-          tweet.retweetCount = retweetCount
-        }
-        if let retweetedStatus = object["retweeted_status"] as? [String: AnyObject] {
-          if let id = retweetedStatus["id"] as? Int {
-            tweet.retweetedId = "\(id)"
-          }
-        }
-        if let userInfo = object["user"] as? [String: AnyObject] {
-          if let username = userInfo["name"] as? String {
-            tweet.username = username
-          }
-          if let favoriteCount = userInfo["favourites_count"] as? Int {
-            tweet.favoriteCount = favoriteCount
-          }
-          if let profilePicURL = userInfo["profile_image_url"] as? String? {
-            tweet.profileImageURL = profilePicURL
-          }
-          if let profileBackgroundURL = userInfo["profile_background_image_url"] as? String {
-            tweet.profileBackgroundImageURL = profileBackgroundURL
-          }
-        }
-        tweets.append(tweet)
       }
     }
     return tweets
   }
   
-  class func tweetInfoFromJSONData(data: NSData) -> Tweet {
+  class func tweetFromJSONData(data: NSData) -> Tweet {
+    var tweet = Tweet()
     var error: NSError?
-    let tweet = Tweet()
     
     if let tweetInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) as? [String: AnyObject] {
+      tweet = self.tweetFromTweetInfo(tweetInfo)
+    }
+    return tweet
+  }
+  
+  private class func tweetFromTweetInfo(tweetInfo: [String: AnyObject]) -> Tweet {
+    var error: NSError?
+    let tweet = Tweet()
         if let id = tweetInfo["id"] as? Int {
           tweet.id = "\(id)"
         }
@@ -93,7 +75,6 @@ class TweetJSONParser {
           if let profileBackgroundURL = userInfo["profile_background_image_url"] as? String {
             tweet.profileBackgroundImageURL = profileBackgroundURL
           }
-        }
       }
     return tweet
   }

@@ -13,7 +13,6 @@ class TweetTableViewCell: UITableViewCell {
   @IBOutlet weak var usernameLabel: UILabel!
   @IBOutlet weak var tweetLabel: UILabel!
   @IBOutlet weak var profileImage: UIImageView!
-
   @IBOutlet weak var retweetCountLabel: UILabel!
   @IBOutlet weak var favoritesCountLabel: UILabel!
 }
