@@ -70,11 +70,6 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
                 self.tweets += tweets!
               }
             }
-            self.tableView.reloadData()
-            self.activityIndicator.stopAnimating()
-            UIView.animateWithDuration(1.0, animations: { () -> Void in
-              self.tableView.userInteractionEnabled = true
-            })
             self.checkForRetweets()
           }
         }
@@ -90,9 +85,10 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   func checkForRetweets() {
     LoginService.requestTwitterAccount { (account, error) -> Void in
       if account != nil {
-      for (index, tweet) in enumerate(self.tweets) {
-        if self.tweets[index].retweetedId != nil {
-          if account != nil {
+        for (index, tweet) in enumerate(self.tweets) {
+          var retweetCount: Int = 0
+          if self.tweets[index].retweetedId != nil {
+            retweetCount++
             TwitterService.sharedService.twitterAccount = account
             TwitterService.sharedService.fetchTweetInfo(self.tweets[index].retweetedId, completionHandler: { (tweet, error) -> Void in
               self.tweets[index] = tweet!
@@ -103,16 +99,22 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
               })
             })
           }
+          if retweetCount == 0 {
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+            UIView.animateWithDuration(1.0, animations: { () -> Void in
+              self.tableView.userInteractionEnabled = true
+            })
+          }
         }
+      } else {
+        let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
+        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alert.addAction(action)
+        self.presentViewController(alert, animated: true, completion: nil)
       }
-    } else {
-      let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
-      let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-      alert.addAction(action)
-      self.presentViewController(alert, animated: true, completion: nil)
     }
   }
-}
 
   //MARK:
   //MARK: UITableViewDataSource
