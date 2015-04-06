@@ -84,6 +84,11 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
                 })
               }
             }
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+            UIView.animateWithDuration(1.0, animations: { () -> Void in
+              self.tableView.userInteractionEnabled = true
+            })
             self.checkForRetweets()
           }
         }
@@ -98,35 +103,25 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
   
   func checkForRetweets() {
     LoginService.requestTwitterAccount { (account, error) -> Void in
-      for (index, tweet) in enumerate(self.userTweets) {
-        var retweetCount: Int = 0
-        if self.userTweets[index].retweetedId != nil {
-          retweetCount++
-          if account != nil {
-            TwitterService.sharedService.twitterAccount = account
-            TwitterService.sharedService.fetchTweetInfo(self.userTweets[index].retweetedId, completionHandler: { (tweet, error) -> Void in
-              self.userTweets[index] = tweet!
-              self.tableView.reloadData()
-              self.activityIndicator.stopAnimating()
-              self.refreshControl!.endRefreshing()
-              UIView.animateWithDuration(1.0, animations: { () -> Void in
-                self.tableView.userInteractionEnabled = true
+      if account != nil {
+        for (index, tweet) in enumerate(self.userTweets) {
+          if self.userTweets[index].didRetreivedRetweetInfo == false {
+            if self.userTweets[index].retweetedId != nil {
+              TwitterService.sharedService.twitterAccount = account
+              TwitterService.sharedService.fetchTweetInfo(self.userTweets[index].retweetedId, completionHandler: { (tweet, error) -> Void in
+                self.userTweets[index] = tweet!
+                self.userTweets[index].didRetreivedRetweetInfo = true
+                let indexPathsForReloading = [NSIndexPath(forRow: index, inSection: 0)]
+                self.tableView.reloadRowsAtIndexPaths(indexPathsForReloading, withRowAnimation: .Automatic)
               })
-            })
-          } else {
-            let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-            alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
+            }
           }
         }
-        if retweetCount == 0 {
-          self.tableView.reloadData()
-          self.activityIndicator.stopAnimating()
-          UIView.animateWithDuration(1.0, animations: { () -> Void in
-            self.tableView.userInteractionEnabled = true
-          })
-        }
+      } else {
+        let alert = UIAlertController(title: error, message: "TweetFellows needs your Twitter account to be configured properly on your iOS Device Settings", preferredStyle: .Alert)
+        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alert.addAction(action)
+        self.presentViewController(alert, animated: true, completion: nil)
       }
     }
   }

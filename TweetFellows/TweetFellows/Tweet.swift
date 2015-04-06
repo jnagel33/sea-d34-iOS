@@ -21,6 +21,7 @@ class Tweet {
   var profileImage: UIImage?
   var profileBackgroundImageURL: String!
   var profileBackgroundImage: UIImage?
+  var didRetreivedRetweetInfo = false
   
   
   init() {

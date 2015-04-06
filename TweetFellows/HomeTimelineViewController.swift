@@ -70,6 +70,11 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
                 self.tweets += tweets!
               }
             }
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+            UIView.animateWithDuration(1.0, animations: { () -> Void in
+              self.tableView.userInteractionEnabled = true
+            })
             self.checkForRetweets()
           }
         }
@@ -86,25 +91,16 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     LoginService.requestTwitterAccount { (account, error) -> Void in
       if account != nil {
         for (index, tweet) in enumerate(self.tweets) {
-          var retweetCount: Int = 0
-          if self.tweets[index].retweetedId != nil {
-            retweetCount++
-            TwitterService.sharedService.twitterAccount = account
-            TwitterService.sharedService.fetchTweetInfo(self.tweets[index].retweetedId, completionHandler: { (tweet, error) -> Void in
-              self.tweets[index] = tweet!
-              self.tableView.reloadData()
-              self.activityIndicator.stopAnimating()
-              UIView.animateWithDuration(1.0, animations: { () -> Void in
-                self.tableView.userInteractionEnabled = true
+          if tweet.didRetreivedRetweetInfo == false {
+            if self.tweets[index].retweetedId != nil {
+              TwitterService.sharedService.twitterAccount = account
+              TwitterService.sharedService.fetchTweetInfo(self.tweets[index].retweetedId, completionHandler: { (tweet, error) -> Void in
+                self.tweets[index] = tweet!
+                self.tweets[index].didRetreivedRetweetInfo = true
+                let indexPathsForReloading = [NSIndexPath(forRow: index, inSection: 0)]
+                self.tableView.reloadRowsAtIndexPaths(indexPathsForReloading, withRowAnimation: .Automatic)
               })
-            })
-          }
-          if retweetCount == 0 {
-            self.tableView.reloadData()
-            self.activityIndicator.stopAnimating()
-            UIView.animateWithDuration(1.0, animations: { () -> Void in
-              self.tableView.userInteractionEnabled = true
-            })
+            }
           }
         }
       } else {
