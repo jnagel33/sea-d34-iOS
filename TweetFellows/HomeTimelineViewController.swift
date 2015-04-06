@@ -70,6 +70,11 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
                 self.tweets += tweets!
               }
             }
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+            UIView.animateWithDuration(1.0, animations: { () -> Void in
+              self.tableView.userInteractionEnabled = true
+            })
             self.checkForRetweets()
           }
         }

@@ -54,6 +54,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
         self.getTweets(["since_id": mostRecentTweet.id])
       }
     }
+    self.refreshControl!.endRefreshing()
     self.tableView.reloadData()
   }
   
@@ -84,6 +85,11 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
               }
             }
             self.checkForRetweets()
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+            UIView.animateWithDuration(1.0, animations: { () -> Void in
+              self.tableView.userInteractionEnabled = true
+            })
           }
         }
       } else {
