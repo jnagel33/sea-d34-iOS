@@ -135,32 +135,8 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
-    
-    cell.tag++
-    let tag = cell.tag
-    cell.usernameLabel.text = nil
-    cell.tweetLabel.text = nil
-    cell.profileImage.image = nil
-    cell.retweetCountLabel.text = nil
-    cell.favoritesCountLabel.text = nil
-    
     let tweet = self.userTweets[indexPath.row]
-    cell.usernameLabel.text = tweet.username
-    cell.tweetLabel.text = tweet.text
-    cell.retweetCountLabel.text = "\(tweet.retweetCount)"
-    cell.favoritesCountLabel.text = "\(tweet.favoriteCount)"
-    
-    ImageService.sharedService.fetchProfileImage(tweet.profileImageURL, completionHandler: { [weak self] (image) -> () in
-      if self != nil {
-        tweet.profileImage = image
-        if tag == cell.tag {
-          cell.profileImage.image = tweet.profileImage
-          cell.profileImage.layer.cornerRadius = 8.0
-          cell.profileImage.clipsToBounds = true
-        }
-      }
-    })
-    cell.layoutIfNeeded()
+    cell.configureCell(tweet)
     return cell
   }
 

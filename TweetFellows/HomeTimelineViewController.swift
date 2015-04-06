@@ -121,36 +121,8 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
-    cell.tag++
-    let tag = cell.tag
-    cell.textLabel?.text = nil
-    cell.usernameLabel?.text = nil
-    cell.imageView?.image = nil
-    cell.retweetCountLabel.text = nil
-    cell.favoritesCountLabel.text = nil
-    
     let tweet = self.tweets[indexPath.row]
-    cell.tweetLabel.text = tweet.text
-    cell.usernameLabel.text = tweet.username
-    cell.retweetCountLabel.text = "\(tweet.retweetCount)"
-    cell.favoritesCountLabel.text = "\(tweet.favoriteCount)"
-    cell.profileImage.image = tweet.profileImage
-      
-    if let image = tweet.profileImage {
-      cell.profileImage.image = image
-    } else {
-      ImageService.sharedService.fetchProfileImage(tweet.profileImageURL, completionHandler: { [weak self] (image) -> () in
-        if self != nil {
-          tweet.profileImage = image
-          if tag == cell.tag {
-            cell.profileImage.image = tweet.profileImage
-            cell.profileImage.layer.cornerRadius = 8.0
-            cell.profileImage.clipsToBounds = true
-          }
-        }
-      })
-    }
-    cell.layoutIfNeeded()
+    cell.configureCell(tweet)
     return cell
   }
   
