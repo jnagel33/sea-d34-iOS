@@ -1,0 +1,24 @@
+Week 2 Notes
+
+UIAlertController
+- popoverPresentationController - iPad
+
+UIImagePickerController
+- isSourceTypeAvailable
+- allowsEditing - square
+- imagePickerDidCancel
+- didFinishPickingMediaWithInfo
+- UIImagePickerControllerDelegate and UINavigationControllerDelegate
+- unsplash, stocksnap - free photo
+Core Image - CI
+- ciimage - recipe for image
+- filter - recipe can change
+  - inputkeys
+- cicontext -draws
+- cpu or gpu
+  -options - nil cpu
+
+Debugging
+- print - p
+- po - object description
+- e - expression - modify values in app
