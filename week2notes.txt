@@ -1,5 +1,7 @@
 Week 2 Notes
 
+Day1
+
 UIAlertController
 - popoverPresentationController - iPad
 
@@ -22,3 +24,19 @@ Debugging
 - print - p
 - po - object description
 - e - expression - modify values in app
+
+Day2
+
+Resizing images
+- NSHipster
+- clip subviews
+
+Parse
+- pffile - images
+
+.gitignore
+-
+
+UITabBarController
+
+Stack Data Structure
