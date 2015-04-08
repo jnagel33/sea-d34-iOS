@@ -40,3 +40,43 @@ Parse
 UITabBarController
 
 Stack Data Structure
+- LIFO
+
+Animating Constraints
+- self.view.layoutifneeded
+- 0.3
+
+-shinobicontrols -custom controls
+  -chrome, instant
+
+Property Observers
+- willset didset
+  -newValue / oldValue
+- does not call from init or default values
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
