@@ -36,7 +36,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   var originalThumbnailImage : UIImage!
   var originalImage: UIImage!
   
-  let filters = [FilterService.gaussianBlurFilter, FilterService.colorInvertFilter, FilterService.photoEffectChromeFilter, FilterService.photoEffectInstantFilter, FilterService.vignetteFilter, FilterService.photoEffectFadeFilter, FilterService.sepiaToneFilter, FilterService.colorPosterizeFilter, FilterService.photoEffectNoirFilter, FilterService.photoEffectTransferFilter, FilterService.greenMonochromeFilter, FilterService.blueMonochromeFilter, FilterService.hueAdjustFilter]
+  let filters = [FilterService.colorInvertFilter, FilterService.photoEffectChromeFilter, FilterService.photoEffectInstantFilter, FilterService.vignetteFilter, FilterService.photoEffectFadeFilter, FilterService.sepiaToneFilter, FilterService.gaussianBlurFilter, FilterService.colorPosterizeFilter, FilterService.photoEffectNoirFilter, FilterService.photoEffectTransferFilter, FilterService.greenMonochromeFilter, FilterService.blueMonochromeFilter, FilterService.hueAdjustFilter]
   var context: CIContext!
   
   var currentImage : UIImage! {
@@ -50,7 +50,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.originalImage = UIImage(named: "photo.jpg")
+    self.originalImage = UIImage(named: "photo2.jpg")
     self.currentImage = self.originalImage
     
     let options = [kCIContextWorkingColorSpace : NSNull()]

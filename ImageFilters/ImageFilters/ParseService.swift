@@ -22,10 +22,7 @@ class ParseService {
         //handle error
       } else {
         println("Successful upload")
-        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-          completionHandler(nil)
-        })
-
+        completionHandler(nil)
       }
     }
   }
