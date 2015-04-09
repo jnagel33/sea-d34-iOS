@@ -90,6 +90,7 @@
                         <outlet property="constraintImageLeading" destination="M65-gP-M8r" id="A8K-t7-szp"/>
                         <outlet property="constraintImageTop" destination="sbg-7f-vZR" id="Xe3-97-jAs"/>
                         <outlet property="constrantImageTrailing" destination="7ed-qK-V7e" id="y25-f9-U4Q"/>
+                        <outlet property="photoButton" destination="thq-VY-bpg" id="jF1-fC-Hcf"/>
                         <outlet property="primaryImageView" destination="i8U-kq-Mtl" id="UmU-Np-DZE"/>
                     </connections>
                 </viewController>

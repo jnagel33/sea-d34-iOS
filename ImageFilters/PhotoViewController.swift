@@ -13,6 +13,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
 
   let alertController = UIAlertController(title: "Options", message: nil, preferredStyle: .ActionSheet)
   
+  @IBOutlet weak var photoButton: UIButton!
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var constraintCollectionViewBottom: NSLayoutConstraint!
   @IBOutlet weak var primaryImageView: UIImageView!
@@ -35,7 +36,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   var originalThumbnailImage : UIImage!
   var originalImage: UIImage!
   
-  let filters = [FilterService.colorInvertFilter, FilterService.sepiaToneFilter, FilterService.colorPosterizeFilter, FilterService.photoEffectNoirFilter, FilterService.photoEffectTransferFilter]
+  let filters = [FilterService.gaussianBlurFilter, FilterService.colorInvertFilter, FilterService.photoEffectChromeFilter, FilterService.photoEffectInstantFilter, FilterService.vignetteFilter, FilterService.photoEffectFadeFilter, FilterService.sepiaToneFilter, FilterService.colorPosterizeFilter, FilterService.photoEffectNoirFilter, FilterService.photoEffectTransferFilter, FilterService.greenMonochromeFilter, FilterService.blueMonochromeFilter, FilterService.hueAdjustFilter]
   var context: CIContext!
   
   var currentImage : UIImage! {
@@ -121,6 +122,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.constraintImageTop.constant += self.constraintBuffer
     self.constraintImageBottom.constant += self.constraintBuffer
     self.constraintCollectionViewBottom.constant = self.constraintcollectionViewBottomInFilter
+    self.photoButton.enabled = false
     
     UIView.animateWithDuration(animationDuration, animations: { () -> Void in
       self.view.layoutIfNeeded()
@@ -138,6 +140,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     
     UIView.animateWithDuration(animationDuration, animations: { () -> Void in
       self.view.layoutIfNeeded()
+      self.photoButton.enabled = true
     })
     
     self.navigationItem.rightBarButtonItem = nil
