@@ -11,52 +11,39 @@ import CoreImage
 
 class FilterService {
   
-  class func photoEffectTransferFilter(image: UIImage) -> UIImage {
-    let image = CIImage(image: image)
-    let photoEffectTransferFilter = CIFilter(name: "CIPhotoEffectTransfer")
-    photoEffectTransferFilter.setDefaults()
-    photoEffectTransferFilter.setValue(image, forKey: kCIInputImageKey)
-    return self.createImageFromFilter(photoEffectTransferFilter)
+  class func photoEffectTransferFilter(image: UIImage, context: CIContext) -> UIImage {
+    let filter = CIFilter(name: "CIPhotoEffectTransfer")
+    filter.setDefaults()
+    return self.createImageFromFilter(filter, image: image, context: context)
   }
   
-  class func sepiaToneFilter(image: UIImage) -> UIImage {
-    let image = CIImage(image: image)
-    let sepiaToneFilter = CIFilter(name: "CISepiaTone")
-    sepiaToneFilter.setValue(0.5, forKey: kCIInputIntensityKey)
-    sepiaToneFilter.setValue(image, forKey: kCIInputImageKey)
-    return self.createImageFromFilter(sepiaToneFilter)
+  class func sepiaToneFilter(image: UIImage, context: CIContext) -> UIImage {
+    let filter = CIFilter(name: "CISepiaTone")
+    filter.setValue(0.5, forKey: kCIInputIntensityKey)
+    return self.createImageFromFilter(filter, image: image, context: context)
   }
   
-  class func photoEffectNoirFilter(image: UIImage) -> UIImage {
-    let image = CIImage(image: image)
-    let photoEffectNoirFilter = CIFilter(name: "CIPhotoEffectNoir")
-    photoEffectNoirFilter.setValue(image, forKey: kCIInputImageKey)
-    return self.createImageFromFilter(photoEffectNoirFilter)
+  class func photoEffectNoirFilter(image: UIImage, context: CIContext) -> UIImage {
+    let filter = CIFilter(name: "CIPhotoEffectNoir")
+    return self.createImageFromFilter(filter, image: image, context: context)
   }
   
-  class func colorPosterizeFilter(image: UIImage) -> UIImage {
-    let image = CIImage(image: image)
-    let colorPosterizeFilter = CIFilter(name: "CIColorPosterize")
-    colorPosterizeFilter.setDefaults()
-    colorPosterizeFilter.setValue(image, forKey: kCIInputImageKey)
-    return self.createImageFromFilter(colorPosterizeFilter)
+  class func colorPosterizeFilter(image: UIImage, context: CIContext) -> UIImage {
+    let filter = CIFilter(name: "CIColorPosterize")
+    filter.setDefaults()
+    return self.createImageFromFilter(filter, image: image, context: context)
   }
   
-  class func colorInvertFilter(image: UIImage) -> UIImage {
-    let image = CIImage(image: image)
-    let colorInvertFilter = CIFilter(name: "CIColorInvert")
-    colorInvertFilter.setDefaults()
-    colorInvertFilter.setValue(image, forKey: kCIInputImageKey)
-    return self.createImageFromFilter(colorInvertFilter)
+  class func colorInvertFilter(image: UIImage, context: CIContext) -> UIImage {
+    let filter = CIFilter(name: "CIColorInvert")
+    filter.setDefaults()
+    return self.createImageFromFilter(filter, image: image, context: context)
   }
   
-  private class func createImageFromFilter(filter: CIFilter) -> UIImage {
-    let result = filter.valueForKey(kCIOutputImageKey) as CIImage
-    
-    let options = [kCIContextWorkingColorSpace : NSNull()]
-    let eaglContext = EAGLContext(API: EAGLRenderingAPI.OpenGLES2)
-    let context = CIContext(EAGLContext: eaglContext, options: options)
-    
+  private class func createImageFromFilter(filter: CIFilter?, image: UIImage, context: CIContext) -> UIImage {
+    let image = CIImage(image: image)
+    filter!.setValue(image, forKey: kCIInputImageKey)
+    let result = filter!.valueForKey(kCIOutputImageKey) as CIImage
     let resultRef = context.createCGImage(result, fromRect: result.extent())
     return UIImage(CGImage: resultRef)!
 

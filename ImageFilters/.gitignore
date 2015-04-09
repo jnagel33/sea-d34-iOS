@@ -1,3 +1,4 @@
+
 # Xcode
 #
 build/
@@ -16,6 +17,8 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+.DS_Store
+Constants.swift
 
 # CocoaPods
 #
