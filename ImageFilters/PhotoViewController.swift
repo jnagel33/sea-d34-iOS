@@ -49,7 +49,6 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.title = "Upload"
     self.originalImage = UIImage(named: "photo.jpg")
     self.currentImage = self.originalImage
     

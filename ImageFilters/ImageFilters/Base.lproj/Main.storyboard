@@ -26,7 +26,7 @@
                                     <action selector="photoButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2Gw-z0-jtm"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testimage2" translatesAutoresizingMaskIntoConstraints="NO" id="i8U-kq-Mtl">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i8U-kq-Mtl">
                                 <rect key="frame" x="0.0" y="64" width="600" height="447"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gEJ-eB-rBk">
@@ -81,7 +81,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Photo Picker" id="jg4-xY-k0g"/>
+                    <tabBarItem key="tabBarItem" title="Upload" image="UploadIcon" id="jg4-xY-k0g"/>
                     <navigationItem key="navigationItem" id="BbE-3k-ju8"/>
                     <connections>
                         <outlet property="collectionView" destination="gEJ-eB-rBk" id="kNC-gt-f43"/>
@@ -129,7 +129,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Timeline" id="tE2-Jh-qMG"/>
+                    <tabBarItem key="tabBarItem" title="Timeline" image="TimelineIcon" id="tE2-Jh-qMG"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UmZ-hW-nwc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -156,6 +156,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="testimage2" width="1050" height="700"/>
+        <image name="TimelineIcon" width="25" height="25"/>
+        <image name="UploadIcon" width="25" height="25"/>
     </resources>
 </document>
