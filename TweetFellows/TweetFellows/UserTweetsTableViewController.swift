@@ -134,7 +134,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
+    let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetTableViewCell
     let tweet = self.userTweets[indexPath.row]
     cell.configureCell(tweet)
     return cell
@@ -145,7 +145,7 @@ class UserTweetsTableViewController: UITableViewController, UITableViewDelegate,
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let tweet = self.userTweets[indexPath.row]
-    let singleTweetContoller = self.storyboard?.instantiateViewControllerWithIdentifier("SingleTweetViewController") as SingleTweetViewController
+    let singleTweetContoller = self.storyboard?.instantiateViewControllerWithIdentifier("SingleTweetViewController") as! SingleTweetViewController
     singleTweetContoller.selectedTweet = tweet
     navigationController?.pushViewController(singleTweetContoller, animated: true)
   }

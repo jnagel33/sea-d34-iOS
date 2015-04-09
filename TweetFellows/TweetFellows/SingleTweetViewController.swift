@@ -10,7 +10,13 @@ import UIKit
 
 class SingleTweetViewController: UIViewController {
 
-  let twitterService: TwitterService!
+  
+  required init(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+  }
+  
+  var twitterService: TwitterService!
   var selectedTweet: Tweet!
   
   @IBOutlet weak var profileImageButton: UIButton!
@@ -43,7 +49,7 @@ class SingleTweetViewController: UIViewController {
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "UserTweets" {
-      let destinationController = segue.destinationViewController as UserTweetsTableViewController
+      let destinationController = segue.destinationViewController as! UserTweetsTableViewController
       destinationController.username = self.selectedTweet.username
       destinationController.screenName = self.selectedTweet.screenName
       destinationController.profileImage = self.selectedTweet.profileImage

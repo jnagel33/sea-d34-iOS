@@ -120,7 +120,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as TweetTableViewCell
+    let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetTableViewCell
     let tweet = self.tweets[indexPath.row]
     cell.configureCell(tweet)
     return cell
@@ -133,7 +133,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
     
     let tweet = self.tweets[indexPath.row]
-    let singleTweetContoller = self.storyboard?.instantiateViewControllerWithIdentifier("SingleTweetViewController") as SingleTweetViewController
+    let singleTweetContoller = self.storyboard?.instantiateViewControllerWithIdentifier("SingleTweetViewController") as! SingleTweetViewController
     singleTweetContoller.selectedTweet = tweet
     navigationController?.pushViewController(singleTweetContoller, animated: true)
   }

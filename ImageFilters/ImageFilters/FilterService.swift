@@ -95,7 +95,7 @@ class FilterService {
   private class func createImageFromFilter(filter: CIFilter?, image: UIImage, context: CIContext) -> UIImage {
     let image = CIImage(image: image)
     filter!.setValue(image, forKey: kCIInputImageKey)
-    let result = filter!.valueForKey(kCIOutputImageKey) as CIImage
+    let result = filter!.valueForKey(kCIOutputImageKey) as! CIImage
     let resultRef = context.createCGImage(result, fromRect: result.extent())
     return UIImage(CGImage: resultRef)!
 

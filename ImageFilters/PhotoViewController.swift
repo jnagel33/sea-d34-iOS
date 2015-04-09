@@ -178,7 +178,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as ImageCollectionViewCell
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as! ImageCollectionViewCell
     let filter = self.filters[indexPath.row]
     cell.imageView.image = filter(self.originalThumbnailImage, context: self.context)
     return cell
