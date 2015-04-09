@@ -50,6 +50,14 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.navigationController!.navigationBar.barTintColor = UIColor(red: 0.017, green: 0.016, blue: 0.154, alpha: 1.000)
+    self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+    self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+    
+    self.tabBarController!.tabBar.barTintColor = UIColor(red: 0.017, green: 0.016, blue: 0.154, alpha: 1.000)
+    self.tabBarController!.tabBar.tintColor = UIColor.whiteColor()
+
+    
     self.originalImage = UIImage(named: "photo2.jpg")
     self.currentImage = self.originalImage
     
@@ -99,13 +107,6 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     }
     alertController.addAction(filterAction)
     
-    let undoFilterAction = UIAlertAction(title: "Undo Filter", style: .Default) { [weak self] (alert) -> Void in
-      if self != nil {
-        self!.currentImage = self!.originalImage
-      }
-    }
-    alertController.addAction(undoFilterAction)
-    
     let uploadAction = UIAlertAction(title: "Upload", style: .Default) { (alert) -> Void in
       ParseService.uploadImage(self.primaryImageView.image!, size: self.imageToUploadSize, completionHandler: { (error) -> Void in
       })
@@ -123,12 +124,17 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.constraintImageBottom.constant += self.constraintBuffer
     self.constraintCollectionViewBottom.constant = self.constraintcollectionViewBottomInFilter
     self.photoButton.enabled = false
+    self.photoButton.hidden = true
+    self.view.backgroundColor = UIColor.whiteColor()
     
     UIView.animateWithDuration(animationDuration, animations: { () -> Void in
       self.view.layoutIfNeeded()
     })
     
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "exitFilterMode")
+    let leftBarButton = UIBarButtonItem(title: "Undo", style: UIBarButtonItemStyle.Plain, target: self, action: "undoFilters")
+    leftBarButton.tintColor = UIColor.redColor()
+    self.navigationItem.leftBarButtonItem = leftBarButton
   }
   
   func exitFilterMode() {
@@ -137,13 +143,20 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.constraintImageTop.constant = self.originalImageConstraintTopLeadingTrailing
     self.constraintImageBottom.constant = self.originalImageConstraintBottom
     self.constraintCollectionViewBottom.constant = -tabBarController!.tabBar.frame.height - collectionViewHeight
+    self.photoButton.enabled = true
+    self.photoButton.hidden = false
+    self.view.backgroundColor = UIColor.lightGrayColor()
     
     UIView.animateWithDuration(animationDuration, animations: { () -> Void in
       self.view.layoutIfNeeded()
-      self.photoButton.enabled = true
     })
     
     self.navigationItem.rightBarButtonItem = nil
+    self.navigationItem.leftBarButtonItem = nil
+  }
+  
+  func undoFilters() {
+    self.currentImage = self.originalImage
   }
   
   @IBAction func photoButtonPressed(sender: UIButton) {
