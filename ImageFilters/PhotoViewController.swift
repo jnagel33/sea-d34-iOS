@@ -96,16 +96,6 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
       }
       self.alertController.addAction(cameraAction)
     }
-    if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
-      let photoLibraryAction = UIAlertAction(title: "Choose Existing Photo", style: .Default) { (alert) -> Void in
-        var imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        imagePickerController.allowsEditing = true
-        self.presentViewController(imagePickerController, animated: true, completion: nil)
-      }
-      self.alertController.addAction(photoLibraryAction)
-    }
     
     //MARK: UIAlertActions
 

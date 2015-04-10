@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4309D9221AD7A040009DDBB4 /* TimelineImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4309D9211AD7A040009DDBB4 /* TimelineImage.swift */; };
 		4369F6D91AD34C0500BCC884 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4369F6D81AD34C0500BCC884 /* AppDelegate.swift */; };
 		4369F6DE1AD34C0500BCC884 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4369F6DC1AD34C0500BCC884 /* Main.storyboard */; };
 		4369F6E01AD34C0500BCC884 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4369F6DF1AD34C0500BCC884 /* Images.xcassets */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4309D9211AD7A040009DDBB4 /* TimelineImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineImage.swift; sourceTree = "<group>"; };
 		4369F6D31AD34C0500BCC884 /* ImageFilters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFilters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4369F6D71AD34C0500BCC884 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4369F6D81AD34C0500BCC884 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				4369F6FD1AD35C2500BCC884 /* FilterService.swift */,
 				43CB50BE1AD4A6CD00A5F99C /* ParseService.swift */,
 				43CB50C01AD4AA5400A5F99C /* ImageResizer.swift */,
+				4309D9211AD7A040009DDBB4 /* TimelineImage.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				4369F6D91AD34C0500BCC884 /* AppDelegate.swift in Sources */,
 				43C021C91AD60C3900DA2A5C /* ImageCollectionViewCell.swift in Sources */,
 				4369F6F91AD34C7300BCC884 /* PhotoViewController.swift in Sources */,
+				4309D9221AD7A040009DDBB4 /* TimelineImage.swift in Sources */,
 				43E5EBFE1AD5BED600933B38 /* TimelineViewController.swift in Sources */,
 				43CB50C11AD4AA5400A5F99C /* ImageResizer.swift in Sources */,
 				43CB50BF1AD4A6CD00A5F99C /* ParseService.swift in Sources */,

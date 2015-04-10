@@ -27,4 +27,31 @@ class ParseService {
     }
   }
   
+  class func fetchPosts(date: NSDate?, completionHandler: ([PFObject]?, NSError?) -> Void) {
+    var query = PFQuery(className: "Post")
+    if let lastItemDate = date {
+      query.whereKey("createdAt", greaterThan: lastItemDate)
+    }
+    query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+      if error != nil {
+        // handle error
+      } else {
+        let posts = objects as! [PFObject]
+        completionHandler(posts, nil)
+      }
+    }
+  }
+  
+  class func imageFromPFFile(file: PFFile, size: CGSize, completionHandler: (UIImage?, NSError?) -> Void) {
+    file.getDataInBackgroundWithBlock { (data, error) -> Void in
+      if error != nil {
+        //handle error
+      } else {
+        if let image = UIImage(data: data!) {
+          let resizedImage = ImageResizer.resizeImage(image, size: size)
+          completionHandler(resizedImage, nil)
+        }
+      }
+    }
+  }
 }
