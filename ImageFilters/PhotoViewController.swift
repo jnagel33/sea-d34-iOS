@@ -9,8 +9,11 @@
 import UIKit
 import CoreImage
 
-class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
-
+class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, GalleryImageDelegate {
+  
+  //MARK:
+  //MARK: Constants, Variables, and Outlets
+  
   let alertController = UIAlertController(title: "Options", message: nil, preferredStyle: .ActionSheet)
   
   @IBOutlet weak var photoButton: UIButton!
@@ -34,11 +37,16 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   let thumbnailImageSize = CGSize(width: 75, height: 75)
   var currentThumbnailImage: UIImage!
   var originalThumbnailImage : UIImage!
-  var originalImage: UIImage!
   
   let filters = [FilterService.colorInvertFilter, FilterService.photoEffectChromeFilter, FilterService.photoEffectInstantFilter, FilterService.vignetteFilter, FilterService.photoEffectFadeFilter, FilterService.sepiaToneFilter, FilterService.gaussianBlurFilter, FilterService.colorPosterizeFilter, FilterService.photoEffectNoirFilter, FilterService.photoEffectTransferFilter, FilterService.greenMonochromeFilter, FilterService.blueMonochromeFilter, FilterService.hueAdjustFilter]
   var context: CIContext!
   
+  
+  var originalImage: UIImage! {
+    didSet {
+      self.currentImage = self.originalImage
+    }
+  }
   var currentImage : UIImage! {
     didSet {
       self.primaryImageView.image = self.currentImage
@@ -50,11 +58,12 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.navigationController!.navigationBar.barTintColor = UIColor(red: 0.017, green: 0.016, blue: 0.154, alpha: 1.000)
+    self.navigationController!.navigationBar.setBackgroundImage(MyStyleKit.imageOfNavAndTabBarBackground, forBarMetrics: .Default)
     self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
     self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+    self.navigationController!.navigationBar.barStyle = UIBarStyle.Black
     
-    self.tabBarController!.tabBar.barTintColor = UIColor(red: 0.017, green: 0.016, blue: 0.154, alpha: 1.000)
+    self.tabBarController!.tabBar.backgroundImage = MyStyleKit.imageOfNavAndTabBarBackground
     self.tabBarController!.tabBar.tintColor = UIColor.whiteColor()
 
     
@@ -85,7 +94,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
         imagePickerController.allowsEditing = true
         self.presentViewController(imagePickerController, animated: true, completion: nil)
       }
-      alertController.addAction(cameraAction)
+      self.alertController.addAction(cameraAction)
     }
     if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
       let photoLibraryAction = UIAlertAction(title: "Choose Existing Photo", style: .Default) { (alert) -> Void in
@@ -95,12 +104,12 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
         imagePickerController.allowsEditing = true
         self.presentViewController(imagePickerController, animated: true, completion: nil)
       }
-      alertController.addAction(photoLibraryAction)
+      self.alertController.addAction(photoLibraryAction)
     }
     
     //MARK: UIAlertActions
 
-    let filterAction = UIAlertAction(title: "Filter", style: .Default) { [weak self] (alert) -> Void in
+    let filterAction = UIAlertAction(title: "Add Filter", style: .Default) { [weak self] (alert) -> Void in
       if self != nil {
         self!.enterFilterMode()
       }
@@ -111,10 +120,15 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
       ParseService.uploadImage(self.primaryImageView.image!, size: self.imageToUploadSize, completionHandler: { (error) -> Void in
       })
     }
-    alertController.addAction(uploadAction)
+    self.alertController.addAction(uploadAction)
     
     let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-    alertController.addAction(cancelAction)
+    self.alertController.addAction(cancelAction)
+    
+    let galleryAction = UIAlertAction(title: "Show Gallery", style: .Default) { (alert) -> Void in
+      self.performSegueWithIdentifier("ShowGallery", sender: self)
+    }
+    self.alertController.addAction(galleryAction)
   }
   
   func enterFilterMode() {
@@ -145,7 +159,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.constraintCollectionViewBottom.constant = -tabBarController!.tabBar.frame.height - collectionViewHeight
     self.photoButton.enabled = true
     self.photoButton.hidden = false
-    self.view.backgroundColor = UIColor.lightGrayColor()
+    self.view.backgroundColor = UIColor.darkGrayColor()
     
     UIView.animateWithDuration(animationDuration, animations: { () -> Void in
       self.view.layoutIfNeeded()
@@ -167,13 +181,27 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     presentViewController(alertController, animated: true, completion: nil)
   }
   
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if segue.identifier == "ShowGallery" {
+      let destinationController = segue.destinationViewController as! GalleryViewController
+      destinationController.imageSizeForPrimaryView = self.primaryImageView.frame.size
+      destinationController.delegate = self
+    }
+  }
+  
+  //MARK
+  //MARK: GalleryViewDelegate
+  
+  func imageForPrimaryView(image: UIImage) {
+    self.originalImage = image
+    
+  }
+  
   //MARK:
   //MARK: UIImagePickerDelegate
   
   func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
     if let photo = info[UIImagePickerControllerEditedImage] as? UIImage {
-      self.primaryImageView.image = photo
-      self.currentImage = photo
       self.originalImage = photo
     }
     picker.dismissViewControllerAnimated(true, completion: nil)

@@ -55,6 +55,28 @@ Property Observers
 - does not call from init or default values
 
 
+- photoButton add constraint animation
+
+Photos Framework
+- import Photos
+- dataSource after getting results
+  -causes reload
+-
+
+Custom Protocol
+
+- protocol 'Delegate name' : class(weak) {
+  func 'methodName'() -> return
+- : class - weak
+
+CollectionView Layout
+- invalidateLayout - recalculate
+
+Gesture Recognizers
+
+Social Sharing
+- SLComposeController
+
 
 
 
