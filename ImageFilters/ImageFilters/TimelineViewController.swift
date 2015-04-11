@@ -57,7 +57,7 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
   func fetchTimelinePosts(date: NSDate?) {
     ParseService.fetchPosts(date) { (objects, error) -> Void in
       if error != nil {
-        //handle error
+        println(error!.description)
       } else {
         for (index, object) in enumerate(objects!) {
           let imageFile = object["imageFile"] as! PFFile

@@ -24,6 +24,7 @@ class TimelineCollectionViewCell: UICollectionViewCell {
     if timelineImageInfo.maxSizeImageLoaded == true {
       self.imageView.image = timelineImageInfo.image
     } else {
+      print(self.imageView.frame.size)
       self.messageLabel.text = timelineImageInfo.message
       let imageFile = timelineImageInfo.file
       ParseService.imageFromPFFile(imageFile, size: self.imageView.frame.size, completionHandler: { [weak self] (image, error) -> Void in
