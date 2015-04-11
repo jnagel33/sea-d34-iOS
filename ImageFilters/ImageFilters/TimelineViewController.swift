@@ -10,19 +10,20 @@ import UIKit
 
 class TimelineViewController: UIViewController, UICollectionViewDataSource {
 
-  @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+  var flowLayout: UICollectionViewFlowLayout!
   @IBOutlet var collectionView: UICollectionView!
   
   var timelineImageInfo = [TimelineImage]()
   let refreshControl = UIRefreshControl()
   var lastRefresh = NSDate()
   var images = [UIImage]()
-//  var collectionViewCellSize = CGSize(width: 100, height: 130)
+  var imageSize: CGSize?
   
   override func viewDidLoad() {
     super.viewDidLoad()
     self.collectionView.dataSource = self
     self.collectionView.userInteractionEnabled = true
+    self.flowLayout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
     
     self.navigationController!.navigationBar.setBackgroundImage(MyStyleKit.imageOfNavAndTabBarBackground, forBarMetrics: .Default)
     self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
@@ -41,14 +42,16 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
     super.viewDidAppear(animated)
     
     if !self.timelineImageInfo.isEmpty {
-      self.fetchTimelinePosts(lastRefresh)
+      self.fetchTimelinePosts(self.lastRefresh)
     } else {
       self.fetchTimelinePosts(nil)
     }
   }
   
   func refresh(sender: AnyObject) {
+    self.refreshControl.beginRefreshing()
     self.fetchTimelinePosts(self.lastRefresh)
+    self.refreshControl.endRefreshing()
   }
   
   func fetchTimelinePosts(date: NSDate?) {
@@ -61,40 +64,41 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
           let message = object["message"] as? String
           var imageInfo = TimelineImage(file: imageFile)
           imageInfo.message = message
-          self.timelineImageInfo.append(imageInfo)
-          self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: self.timelineImageInfo.count - 1, inSection: 0)])
+          if date != nil {
+            self.timelineImageInfo.insert(imageInfo, atIndex: 0)
+            self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
+          } else {
+            self.timelineImageInfo.append(imageInfo)
+            self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: self.timelineImageInfo.count - 1, inSection: 0)])
+          }
         }
       }
-      self.refreshControl.endRefreshing()
       self.lastRefresh = NSDate()
       self.collectionView.userInteractionEnabled = true
     }
   }
   
   func pinchOccurred(sender: UIPinchGestureRecognizer) {
-    var maxWidth: CGFloat = 320
-    var minWidth: CGFloat = 60
-    var maxHeight: CGFloat = 320
-    var minHeight: CGFloat = 80
     if sender.state == UIGestureRecognizerState.Changed {
-      var newWidth: CGFloat = self.flowLayout.itemSize.width * (sender.scale)
-      var newHeight: CGFloat = self.flowLayout.itemSize.height * (sender.scale)
-      if newWidth >= maxWidth {
-        newWidth = maxWidth
-        newHeight = maxHeight
-      } else if newWidth <= minWidth {
-        newWidth = minWidth
-        newHeight = minHeight
+      
+      
+      let maxSize = self.collectionView.frame.size
+      let minSize = CGSize(width: 50, height: 50)
+      let oldSize = self.flowLayout.itemSize
+      var newSize = CGSize(width: oldSize.width * sender.scale, height: oldSize.height * sender.scale)
+      if newSize.width >= maxSize.width {
+        newSize = CGSize(width: maxSize.width, height: maxSize.width - 50)
+      } else if newSize.width <= minSize.height {
+        newSize = minSize
       }
-      self.flowLayout.itemSize = CGSize(width: newWidth, height: newHeight)
-      
-      
+      self.flowLayout.itemSize = newSize
+    } else if sender.state == UIGestureRecognizerState.Ended {
       self.collectionView.performBatchUpdates({ () -> Void in
         self.flowLayout.invalidateLayout()
-      }, completion: nil)
-    } else if sender.state == UIGestureRecognizerState.Ended {
-//      self.collectionViewCellSize = self.flowLayout.itemSize
+        self.collectionView.reloadData()
+        }, completion: nil)
     }
+    
   }
   
   //MARK:
@@ -106,6 +110,15 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TimelineCell", forIndexPath: indexPath) as! TimelineCollectionViewCell
+    let cellImageHeightPercentageDifferential = cell.imageView.frame.height / cell.frame.height
+    var imageFrameSize = CGSize(width: self.flowLayout.itemSize.width, height: self.flowLayout.itemSize.height * cellImageHeightPercentageDifferential)
+//    println("test 2 \(self.flowLayout.itemSize.height * cellImageHeightPercentageDifferential)")
+//    println("test 2 \(self.flowLayout.itemSize.width)")
+//    cell.imageView.frame.size = imageFrameSize
+//    println("\(cell.imageView.frame.width) imageview width")
+//    println("\(cell.imageView.frame.height) imageview height")
+//    println(self.flowLayout.itemSize.width)
+//    println(self.flowLayout.itemSize.width)
     let info = timelineImageInfo[indexPath.row]
     cell.configureCell(info)
     return cell

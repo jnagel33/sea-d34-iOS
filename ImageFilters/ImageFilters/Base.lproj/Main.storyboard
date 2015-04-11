@@ -193,7 +193,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="100" height="130"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="100" verticalHuggingPriority="100" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="mN8-df-nAs">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="100" verticalHuggingPriority="100" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="mN8-df-nAs">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="99" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SPL-YP-4jw">
@@ -214,6 +214,7 @@
                                     <constraint firstItem="SPL-YP-4jw" firstAttribute="top" secondItem="mN8-df-nAs" secondAttribute="bottom" constant="7" id="s7E-qX-gHl"/>
                                     <constraint firstItem="mN8-df-nAs" firstAttribute="top" secondItem="LeV-FI-qfb" secondAttribute="top" id="wDQ-LQ-dm2"/>
                                 </constraints>
+                                <size key="customSize" width="100" height="130"/>
                                 <connections>
                                     <outlet property="imageView" destination="mN8-df-nAs" id="ZP1-DK-7Xx"/>
                                     <outlet property="messageLabel" destination="SPL-YP-4jw" id="ImA-3S-3rK"/>
@@ -224,7 +225,6 @@
                     <navigationItem key="navigationItem" title="Timeline Photos" id="XMD-JB-092"/>
                     <connections>
                         <outlet property="collectionView" destination="uPf-c6-SWL" id="eqX-6q-vQo"/>
-                        <outlet property="flowLayout" destination="6H2-US-PFn" id="zVe-iD-mvi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3PE-Tk-6rD" userLabel="First Responder" sceneMemberID="firstResponder"/>

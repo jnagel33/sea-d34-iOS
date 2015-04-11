@@ -16,7 +16,9 @@ class ParseService {
     let imageFile = PFFile(name: "post.jpg", data: imageData)
     let post = PFObject(className: "Post")
     post["imageFile"] = imageFile
-    post["message"] = message
+    if message != nil {
+      post["message"] = message
+    }
     
     post.saveInBackgroundWithBlock { (finished, error) -> Void in
       if error != nil {
@@ -33,6 +35,7 @@ class ParseService {
     if let lastItemDate = date {
       query.whereKey("createdAt", greaterThan: lastItemDate)
     }
+    query.orderByDescending("createdAt")
     query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
       if error != nil {
         // handle error
