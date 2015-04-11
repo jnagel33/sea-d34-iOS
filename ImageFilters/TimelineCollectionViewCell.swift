@@ -14,30 +14,25 @@ class TimelineCollectionViewCell: UICollectionViewCell {
     
   @IBOutlet weak var messageLabel: UILabel!
   
-  let maxSizeImage = CGSize(width: 375, height: 310)
   
-  func configureCell(timelineImageInfo: TimelineImage) {
+  func configureCell(timelineImageInfo: TimelineImageInfo) {
     self.tag++
     let tag = self.tag
     self.messageLabel.text = nil
     self.imageView.image = nil
-    if timelineImageInfo.maxSizeImageLoaded == true {
+    if timelineImageInfo.image != nil && timelineImageInfo.image?.size.height >= self.imageView.frame.height {
       self.imageView.image = timelineImageInfo.image
     } else {
-      print(self.imageView.frame.size)
       self.messageLabel.text = timelineImageInfo.message
       let imageFile = timelineImageInfo.file
       ParseService.imageFromPFFile(imageFile, size: self.imageView.frame.size, completionHandler: { [weak self] (image, error) -> Void in
         if self != nil {
           if error != nil {
-            println(error!.description)
+            //handle error
           } else {
             if tag == self!.tag {
               timelineImageInfo.image = image
               self!.imageView.image = image
-              if self!.imageView.frame.size == self!.maxSizeImage {
-                timelineImageInfo.maxSizeImageLoaded = true
-              }
             }
           }
         }

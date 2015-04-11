@@ -13,11 +13,12 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
   var flowLayout: UICollectionViewFlowLayout!
   @IBOutlet var collectionView: UICollectionView!
   
-  var timelineImageInfo = [TimelineImage]()
+  var timelineImageInfo = [TimelineImageInfo]()
   let refreshControl = UIRefreshControl()
   var lastRefresh = NSDate()
   var images = [UIImage]()
   var imageSize: CGSize?
+  let imageViewBuffer: CGFloat = 50
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -62,7 +63,7 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
         for (index, object) in enumerate(objects!) {
           let imageFile = object["imageFile"] as! PFFile
           let message = object["message"] as? String
-          var imageInfo = TimelineImage(file: imageFile)
+          var imageInfo = TimelineImageInfo(file: imageFile)
           imageInfo.message = message
           if date != nil {
             self.timelineImageInfo.insert(imageInfo, atIndex: 0)
@@ -74,31 +75,31 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
         }
       }
       self.lastRefresh = NSDate()
+      self.refreshControl.endRefreshing()
       self.collectionView.userInteractionEnabled = true
     }
   }
   
   func pinchOccurred(sender: UIPinchGestureRecognizer) {
     if sender.state == UIGestureRecognizerState.Changed {
-      
-      
-      let maxSize = self.collectionView.frame.size
-      let minSize = CGSize(width: 50, height: 50)
+      var maxSizeForCell = self.collectionView.frame.size
+      let minSizeForCell = CGSize(width: 75, height: 75)
       let oldSize = self.flowLayout.itemSize
       var newSize = CGSize(width: oldSize.width * sender.scale, height: oldSize.height * sender.scale)
-      if newSize.width >= maxSize.width {
-        newSize = CGSize(width: maxSize.width, height: maxSize.width - 50)
-      } else if newSize.width <= minSize.height {
-        newSize = minSize
+      if newSize.width >= maxSizeForCell.width {
+        newSize = CGSize(width: maxSizeForCell.width, height: maxSizeForCell.width - self.imageViewBuffer)
+      } else if newSize.width <= minSizeForCell.height {
+        newSize = minSizeForCell
       }
       self.flowLayout.itemSize = newSize
     } else if sender.state == UIGestureRecognizerState.Ended {
       self.collectionView.performBatchUpdates({ () -> Void in
         self.flowLayout.invalidateLayout()
-        self.collectionView.reloadData()
-        }, completion: nil)
+      }, completion: nil)
+      if self.flowLayout.itemSize.width == self.collectionView.frame.size.width{
+          self.collectionView.reloadItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0), NSIndexPath(forItem: 1, inSection: 0)])
+      }
     }
-    
   }
   
   //MARK:
@@ -112,13 +113,6 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TimelineCell", forIndexPath: indexPath) as! TimelineCollectionViewCell
     let cellImageHeightPercentageDifferential = cell.imageView.frame.height / cell.frame.height
     var imageFrameSize = CGSize(width: self.flowLayout.itemSize.width, height: self.flowLayout.itemSize.height * cellImageHeightPercentageDifferential)
-//    println("test 2 \(self.flowLayout.itemSize.height * cellImageHeightPercentageDifferential)")
-//    println("test 2 \(self.flowLayout.itemSize.width)")
-//    cell.imageView.frame.size = imageFrameSize
-//    println("\(cell.imageView.frame.width) imageview width")
-//    println("\(cell.imageView.frame.height) imageview height")
-//    println(self.flowLayout.itemSize.width)
-//    println(self.flowLayout.itemSize.width)
     let info = timelineImageInfo[indexPath.row]
     cell.configureCell(info)
     return cell

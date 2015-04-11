@@ -19,14 +19,11 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   @IBOutlet var collectionView: UICollectionView!
   
   var assets = PHFetchResult()
-  
   let manager = PHCachingImageManager()
-  
   var delegate: GalleryImageDelegate?
-  
   var imageSizeForPrimaryView: CGSize!
-  
-  var collectionViewCellSize = CGSize(width: 300, height: 300)
+  var collectionViewCellSize = CGSize(width: 100, height: 100)
+  let imageViewBuffer: CGFloat = 50
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -35,30 +32,31 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
     
-//    var pinchRecognizer = UIPinchGestureRecognizer(target: self, action: "pinchOccurred:")
-//    self.collectionView.addGestureRecognizer(pinchRecognizer)
+    var pinchRecognizer = UIPinchGestureRecognizer(target: self, action: "pinchOccurred:")
+    self.collectionView.addGestureRecognizer(pinchRecognizer)
   }
-//  
-//  func pinchOccurred(sender: UIPinchGestureRecognizer) {
-//    var maxWidthHeight: CGFloat = 300
-//    var minWidthHeight: CGFloat = 33
-//    if sender.state == UIGestureRecognizerState.Changed {
-//      var newWidthHeight: CGFloat = self.collectionViewCellSize.width * (sender.scale / 0.50)
-//      if newWidthHeight >= maxWidthHeight {
-//        newWidthHeight = maxWidthHeight
-//      } else if newWidthHeight <= minWidthHeight {
-//        newWidthHeight = minWidthHeight
-//      }
-//      self.flowLayout.itemSize = CGSize(width: newWidthHeight, height: newWidthHeight)
-//      
-//      
-//      self.collectionView.performBatchUpdates({ () -> Void in
-//        self.flowLayout.invalidateLayout()
-//        }, completion: nil)
-//    } else if sender.state == UIGestureRecognizerState.Ended {
-//      self.collectionViewCellSize = self.flowLayout.itemSize
-//    }
-//  }
+  
+  func pinchOccurred(sender: UIPinchGestureRecognizer) {
+    if sender.state == UIGestureRecognizerState.Changed {
+      var maxSizeForCell = self.collectionView.frame.size
+      let minSizeForCell = CGSize(width: 75, height: 75)
+      let oldSize = self.flowLayout.itemSize
+      var newSize = CGSize(width: oldSize.width * sender.scale, height: oldSize.height * sender.scale)
+      if newSize.width >= maxSizeForCell.width {
+        newSize = CGSize(width: maxSizeForCell.width, height: maxSizeForCell.width - self.imageViewBuffer)
+      } else if newSize.width <= minSizeForCell.height {
+        newSize = minSizeForCell
+      }
+      self.flowLayout.itemSize = newSize
+    } else if sender.state == UIGestureRecognizerState.Ended {
+      self.collectionView.performBatchUpdates({ () -> Void in
+        self.flowLayout.invalidateLayout()
+        }, completion: nil)
+      if self.flowLayout.itemSize.width == self.collectionView.frame.size.width{
+        self.collectionView.reloadItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0), NSIndexPath(forItem: 1, inSection: 0)])
+      }
+    }
+  }
 
   //MARK:
   //MARK: UICollectionViewDataSource
@@ -69,9 +67,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GalleryCell", forIndexPath: indexPath) as! GalleryCollectionViewCell
-    
     let asset = self.assets[indexPath.row] as! PHAsset
-    
     let image = self.manager.requestImageForAsset(asset, targetSize: self.collectionViewCellSize, contentMode: .AspectFill, options: nil) { [weak self] (image, info) -> Void in
       if self != nil {
         cell.imageView.image = image
@@ -90,8 +86,6 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         self!.delegate?.imageForPrimaryView(image)
         self!.navigationController?.popToRootViewControllerAnimated(true)
       }
-      
     }
   }
-
 }

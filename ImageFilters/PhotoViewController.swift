@@ -77,7 +77,6 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.tabBarController!.tabBar.backgroundImage = MyStyleKit.imageOfNavAndTabBarBackground
     self.tabBarController!.tabBar.tintColor = UIColor.whiteColor()
 
-    
     self.originalImage = UIImage(named: "photo2.jpg")
     self.currentImage = self.originalImage
     
@@ -90,7 +89,6 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     
     self.originalImageConstraintBottom = self.constraintCollectionViewBottom.constant
     self.originalImageConstraintTopLeadingTrailing = self.constraintImageLeading.constant
-    
     self.constraintCollectionViewBottom.constant = -tabBarController!.tabBar.frame.height - collectionViewHeight
     self.constraintImageLeading.constant = self.originalImageConstraintTopLeadingTrailing
     self.constrantImageTrailing.constant = self.originalImageConstraintTopLeadingTrailing
