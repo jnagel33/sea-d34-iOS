@@ -46,14 +46,13 @@ class ParseService {
     }
   }
   
-  class func imageFromPFFile(file: PFFile, size: CGSize, completionHandler: (UIImage?, NSError?) -> Void) {
+  class func imageFromPFFile(file: PFFile, completionHandler: (UIImage?, NSError?) -> Void) {
     file.getDataInBackgroundWithBlock { (data, error) -> Void in
       if error != nil {
         //handle error
       } else {
         if let image = UIImage(data: data!) {
-          let resizedImage = ImageResizer.resizeImage(image, size: size)
-          completionHandler(resizedImage, nil)
+          completionHandler(image, nil)
         }
       }
     }

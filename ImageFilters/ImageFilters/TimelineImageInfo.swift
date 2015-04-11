@@ -9,11 +9,7 @@
 import Foundation
 
 class TimelineImageInfo {
-  var file: PFFile
+  var file: PFFile!
   var image: UIImage?
   var message: String?
-  
-  init(file: PFFile) {
-    self.file = file
-  }
 }

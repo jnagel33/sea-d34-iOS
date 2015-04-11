@@ -24,11 +24,13 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   var imageSizeForPrimaryView: CGSize!
   var collectionViewCellSize = CGSize(width: 100, height: 100)
   let imageViewBuffer: CGFloat = 50
+  var galleryImages: [UIImage] = [UIImage]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     self.assets = PHAsset.fetchAssetsWithMediaType(PHAssetMediaType.Image, options: nil)
+    
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
     
@@ -51,10 +53,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     } else if sender.state == UIGestureRecognizerState.Ended {
       self.collectionView.performBatchUpdates({ () -> Void in
         self.flowLayout.invalidateLayout()
-        }, completion: nil)
-      if self.flowLayout.itemSize.width == self.collectionView.frame.size.width{
-        self.collectionView.reloadItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0), NSIndexPath(forItem: 1, inSection: 0)])
-      }
+      }, completion: nil)
     }
   }
 
@@ -66,11 +65,23 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GalleryCell", forIndexPath: indexPath) as! GalleryCollectionViewCell
-    let asset = self.assets[indexPath.row] as! PHAsset
-    let image = self.manager.requestImageForAsset(asset, targetSize: self.collectionViewCellSize, contentMode: .AspectFill, options: nil) { [weak self] (image, info) -> Void in
-      if self != nil {
-        cell.imageView.image = image
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GalleryCell", forIndexPath: indexPath) as!
+    GalleryCollectionViewCell
+    cell.tag++
+    let tag = cell.tag
+    cell.imageView.image = nil
+    
+    if tag == cell.tag {
+      let asset = self.assets[indexPath.row] as! PHAsset
+      if !self.galleryImages.isEmpty && self.galleryImages.count > indexPath.row {
+        let resizedImage = ImageResizer.resizeImage(self.galleryImages[indexPath.row], size: self.flowLayout.itemSize)
+        cell.imageView.image = resizedImage
+      } else {
+        let image = self.manager.requestImageForAsset(asset, targetSize: self.flowLayout.itemSize, contentMode: .AspectFill, options: nil) { [weak self] (image, info) -> Void in
+          if self != nil {
+            cell.imageView.image = image
+          }
+        }
       }
     }
     return cell
@@ -81,7 +92,9 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     let asset = self.assets[indexPath.row] as! PHAsset
-    let image = self.manager.requestImageForAsset(asset, targetSize: self.imageSizeForPrimaryView, contentMode: .AspectFill, options: nil) { [weak self] (image, info) -> Void in
+    var options = PHImageRequestOptions()
+    options.networkAccessAllowed = true
+    let image = self.manager.requestImageForAsset(asset, targetSize: self.imageSizeForPrimaryView, contentMode: .AspectFill, options: options) { [weak self] (image, info) -> Void in
       if self != nil {
         self!.delegate?.imageForPrimaryView(image)
         self!.navigationController?.popToRootViewControllerAnimated(true)

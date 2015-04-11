@@ -56,27 +56,30 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
   }
   
   func fetchTimelinePosts(date: NSDate?) {
-    ParseService.fetchPosts(date) { (objects, error) -> Void in
-      if error != nil {
-        println(error!.description)
-      } else {
-        for (index, object) in enumerate(objects!) {
-          let imageFile = object["imageFile"] as! PFFile
-          let message = object["message"] as? String
-          var imageInfo = TimelineImageInfo(file: imageFile)
-          imageInfo.message = message
-          if date != nil {
-            self.timelineImageInfo.insert(imageInfo, atIndex: 0)
-            self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
-          } else {
-            self.timelineImageInfo.append(imageInfo)
-            self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: self.timelineImageInfo.count - 1, inSection: 0)])
+    ParseService.fetchPosts(date) { [weak self] (objects, error) -> Void in
+      if self != nil {
+        if error != nil {
+          println(error!.description)
+        } else {
+          for (index, object) in enumerate(objects!) {
+            let imageFile = object["imageFile"] as! PFFile
+            let message = object["message"] as? String
+            var imageInfo = TimelineImageInfo()
+            imageInfo.file = imageFile
+            imageInfo.message = message
+            if date != nil {
+              self!.timelineImageInfo.insert(imageInfo, atIndex: 0)
+              self!.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
+            } else {
+              self!.timelineImageInfo.append(imageInfo)
+              self!.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: self!.timelineImageInfo.count - 1, inSection: 0)])
+            }
           }
         }
+        self!.lastRefresh = NSDate()
+        self!.refreshControl.endRefreshing()
+        self!.collectionView.userInteractionEnabled = true
       }
-      self.lastRefresh = NSDate()
-      self.refreshControl.endRefreshing()
-      self.collectionView.userInteractionEnabled = true
     }
   }
   
@@ -94,11 +97,9 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
       self.flowLayout.itemSize = newSize
     } else if sender.state == UIGestureRecognizerState.Ended {
       self.collectionView.performBatchUpdates({ () -> Void in
+        self.collectionView.reloadData()
         self.flowLayout.invalidateLayout()
       }, completion: nil)
-      if self.flowLayout.itemSize.width == self.collectionView.frame.size.width{
-          self.collectionView.reloadItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0), NSIndexPath(forItem: 1, inSection: 0)])
-      }
     }
   }
   
@@ -111,8 +112,6 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TimelineCell", forIndexPath: indexPath) as! TimelineCollectionViewCell
-    let cellImageHeightPercentageDifferential = cell.imageView.frame.height / cell.frame.height
-    var imageFrameSize = CGSize(width: self.flowLayout.itemSize.width, height: self.flowLayout.itemSize.height * cellImageHeightPercentageDifferential)
     let info = timelineImageInfo[indexPath.row]
     cell.configureCell(info)
     return cell

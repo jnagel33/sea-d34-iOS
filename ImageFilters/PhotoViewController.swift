@@ -95,19 +95,21 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.constraintImageTop.constant = self.originalImageConstraintTopLeadingTrailing
     self.constraintImageBottom.constant = self.originalImageConstraintBottom
     
+    //MARK: UIAlertActions
+    
     if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-      let cameraAction = UIAlertAction(title: "Take A Picture", style: .Default) { (alert) -> Void in
-        var imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
-        imagePickerController.allowsEditing = true
-        self.presentViewController(imagePickerController, animated: true, completion: nil)
+      let cameraAction = UIAlertAction(title: "Take A Picture", style: .Default) { [weak self] (alert) -> Void in
+        if self != nil {
+          var imagePickerController = UIImagePickerController()
+          imagePickerController.delegate = self!
+          imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
+          imagePickerController.allowsEditing = true
+          self!.presentViewController(imagePickerController, animated: true, completion: nil)
+        }
       }
       self.optionsAlertController.addAction(cameraAction)
     }
     
-    //MARK: UIAlertActions
-
     let filterAction = UIAlertAction(title: "Add Filter", style: .Default) { [weak self] (alert) -> Void in
       if self != nil {
         self!.enterFilterMode()
