@@ -10,12 +10,14 @@ import UIKit
 
 class TimelineViewController: UIViewController, UICollectionViewDataSource {
 
+  @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
   @IBOutlet var collectionView: UICollectionView!
   
   var timelineImageInfo = [TimelineImage]()
   let refreshControl = UIRefreshControl()
   var lastRefresh = NSDate()
   var images = [UIImage]()
+//  var collectionViewCellSize = CGSize(width: 100, height: 130)
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -31,7 +33,7 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
     self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
     self.collectionView.addSubview(refreshControl)
     
-    var pinchRecognizer = UIPinchGestureRecognizer(target: self, action: "pinchOccured")
+    var pinchRecognizer = UIPinchGestureRecognizer(target: self, action: "pinchOccurred:")
     self.collectionView.addGestureRecognizer(pinchRecognizer)
   }
   
@@ -56,13 +58,42 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
       } else {
         for (index, object) in enumerate(objects!) {
           let imageFile = object["imageFile"] as! PFFile
-          self.timelineImageInfo.append(TimelineImage(file: imageFile))
+          let message = object["message"] as? String
+          var imageInfo = TimelineImage(file: imageFile)
+          imageInfo.message = message
+          self.timelineImageInfo.append(imageInfo)
           self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: self.timelineImageInfo.count - 1, inSection: 0)])
         }
       }
       self.refreshControl.endRefreshing()
       self.lastRefresh = NSDate()
       self.collectionView.userInteractionEnabled = true
+    }
+  }
+  
+  func pinchOccurred(sender: UIPinchGestureRecognizer) {
+    var maxWidth: CGFloat = 320
+    var minWidth: CGFloat = 60
+    var maxHeight: CGFloat = 320
+    var minHeight: CGFloat = 80
+    if sender.state == UIGestureRecognizerState.Changed {
+      var newWidth: CGFloat = self.flowLayout.itemSize.width * (sender.scale)
+      var newHeight: CGFloat = self.flowLayout.itemSize.height * (sender.scale)
+      if newWidth >= maxWidth {
+        newWidth = maxWidth
+        newHeight = maxHeight
+      } else if newWidth <= minWidth {
+        newWidth = minWidth
+        newHeight = minHeight
+      }
+      self.flowLayout.itemSize = CGSize(width: newWidth, height: newHeight)
+      
+      
+      self.collectionView.performBatchUpdates({ () -> Void in
+        self.flowLayout.invalidateLayout()
+      }, completion: nil)
+    } else if sender.state == UIGestureRecognizerState.Ended {
+//      self.collectionViewCellSize = self.flowLayout.itemSize
     }
   }
   
@@ -74,24 +105,9 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TimelineCell", forIndexPath: indexPath) as! GalleryCollectionViewCell
-    cell.imageView.image = nil
-    
-    let info = self.timelineImageInfo[indexPath.row]
-    
-    if let image = info.image {
-      cell.imageView.image = image
-    } else {
-      let imageFile = self.timelineImageInfo[indexPath.row].file
-      ParseService.imageFromPFFile(imageFile, size: cell.imageView.frame.size, completionHandler: { (image, error) -> Void in
-        if error != nil {
-          println(error!.description)
-        } else {
-          info.image = image
-          cell.imageView.image = image
-        }
-      })
-    }
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TimelineCell", forIndexPath: indexPath) as! TimelineCollectionViewCell
+    let info = timelineImageInfo[indexPath.row]
+    cell.configureCell(info)
     return cell
   }
   

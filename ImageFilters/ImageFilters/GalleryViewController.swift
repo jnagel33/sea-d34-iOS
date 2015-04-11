@@ -15,6 +15,7 @@ protocol GalleryImageDelegate : class {
 
 class GalleryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
+  @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
   @IBOutlet var collectionView: UICollectionView!
   
   var assets = PHFetchResult()
@@ -25,12 +26,42 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
   
   var imageSizeForPrimaryView: CGSize!
   
+  var collectionViewCellSize = CGSize(width: 100, height: 100)
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     self.assets = PHAsset.fetchAssetsWithMediaType(PHAssetMediaType.Image, options: nil)
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
+    
+    var pinchRecognizer = UIPinchGestureRecognizer(target: self, action: "pinchOccurred:")
+    self.collectionView.addGestureRecognizer(pinchRecognizer)
+  }
+  
+  func pinchOccurred(sender: UIPinchGestureRecognizer) {
+    var maxWidthHeight: CGFloat = 300
+    var minWidthHeight: CGFloat = 33
+    if sender.state == UIGestureRecognizerState.Changed {
+      var newWidthHeight: CGFloat = self.collectionViewCellSize.width * (sender.scale / 0.50)
+      if newWidthHeight >= maxWidthHeight {
+        newWidthHeight = maxWidthHeight
+      } else if newWidthHeight <= minWidthHeight {
+        newWidthHeight = minWidthHeight
+      }
+      self.flowLayout.itemSize = CGSize(width: newWidthHeight, height: newWidthHeight)
+//      self.flowLayout.sectionInset.bottom = self.flowLayout.sectionInset.bottom * sender.scale
+//      self.flowLayout.sectionInset.top = self.flowLayout.sectionInset.bottom * sender.scale
+//      self.flowLayout.sectionInset.left = self.flowLayout.sectionInset.bottom * sender.scale
+//      self.flowLayout.sectionInset.right = self.flowLayout.sectionInset.bottom * sender.scale
+      
+      
+      self.collectionView.performBatchUpdates({ () -> Void in
+        self.flowLayout.invalidateLayout()
+        }, completion: nil)
+    } else if sender.state == UIGestureRecognizerState.Ended {
+      self.collectionViewCellSize = self.flowLayout.itemSize
+    }
   }
 
   //MARK:

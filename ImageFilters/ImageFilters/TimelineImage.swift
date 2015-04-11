@@ -11,6 +11,7 @@ import Foundation
 class TimelineImage {
   var file: PFFile
   var image: UIImage?
+  var message: String?
   
   init(file: PFFile) {
     self.file = file

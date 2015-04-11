@@ -8,13 +8,15 @@
 
 import UIKit
 import CoreImage
+import Social
 
 class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, GalleryImageDelegate {
   
   //MARK:
   //MARK: Constants, Variables, and Outlets
   
-  let alertController = UIAlertController(title: "Options", message: nil, preferredStyle: .ActionSheet)
+  let optionsAlertController = UIAlertController(title: "Options", message: nil, preferredStyle: .ActionSheet)
+  var messageAlertController = UIAlertController(title: "Add Message", message: "Add a message to save with this photo", preferredStyle: .Alert)
   
   @IBOutlet weak var photoButton: UIButton!
   @IBOutlet weak var collectionView: UICollectionView!
@@ -37,6 +39,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   let thumbnailImageSize = CGSize(width: 75, height: 75)
   var currentThumbnailImage: UIImage!
   var originalThumbnailImage : UIImage!
+  var currentMessage: String?
   
   let filters = [FilterService.colorInvertFilter, FilterService.photoEffectChromeFilter, FilterService.photoEffectInstantFilter, FilterService.vignetteFilter, FilterService.photoEffectFadeFilter, FilterService.sepiaToneFilter, FilterService.gaussianBlurFilter, FilterService.colorPosterizeFilter, FilterService.photoEffectNoirFilter, FilterService.photoEffectTransferFilter, FilterService.greenMonochromeFilter, FilterService.blueMonochromeFilter, FilterService.hueAdjustFilter]
   var context: CIContext!
@@ -57,6 +60,14 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+      let socialBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "socialShare")
+      self.navigationItem.rightBarButtonItem = socialBarButton
+    }
+    let messageBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "addMessage")
+    self.navigationItem.leftBarButtonItem = messageBarButton
+    
     
     self.navigationController!.navigationBar.setBackgroundImage(MyStyleKit.imageOfNavAndTabBarBackground, forBarMetrics: .Default)
     self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
@@ -94,7 +105,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
         imagePickerController.allowsEditing = true
         self.presentViewController(imagePickerController, animated: true, completion: nil)
       }
-      self.alertController.addAction(cameraAction)
+      self.optionsAlertController.addAction(cameraAction)
     }
     
     //MARK: UIAlertActions
@@ -104,21 +115,35 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
         self!.enterFilterMode()
       }
     }
-    alertController.addAction(filterAction)
+    self.optionsAlertController.addAction(filterAction)
     
     let uploadAction = UIAlertAction(title: "Upload", style: .Default) { (alert) -> Void in
-      ParseService.uploadImage(self.primaryImageView.image!, size: self.imageToUploadSize, completionHandler: { (error) -> Void in
+      ParseService.uploadImageInfo(self.primaryImageView.image!, message: self.currentMessage, size: self.imageToUploadSize, completionHandler: { (error) -> Void in
+        self.currentMessage = nil
       })
     }
-    self.alertController.addAction(uploadAction)
+    
+    self.optionsAlertController.addAction(uploadAction)
     
     let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-    self.alertController.addAction(cancelAction)
+    self.optionsAlertController.addAction(cancelAction)
     
     let galleryAction = UIAlertAction(title: "Show Gallery", style: .Default) { (alert) -> Void in
       self.performSegueWithIdentifier("ShowGallery", sender: self)
     }
-    self.alertController.addAction(galleryAction)
+    self.optionsAlertController.addAction(galleryAction)
+    
+    let saveMessageAction = UIAlertAction(title: "Save", style: .Default) { (action: UIAlertAction!) -> Void in
+        let textField = self.messageAlertController.textFields![0] as! UITextField
+        self.currentMessage = textField.text
+    }
+    let cancelMessageAction = UIAlertAction(title: "Cancel", style: .Default, handler: nil)
+    messageAlertController.addTextFieldWithConfigurationHandler {
+      (textField: UITextField!) -> Void in
+    }
+    messageAlertController.addAction(saveMessageAction)
+    messageAlertController.addAction(cancelMessageAction)
+
   }
   
   func enterFilterMode() {
@@ -155,20 +180,30 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
       self.view.layoutIfNeeded()
     })
     
-    self.navigationItem.rightBarButtonItem = nil
-    self.navigationItem.leftBarButtonItem = nil
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "socialShare")
+    self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "addMessage")
   }
   
   func undoFilters() {
     self.currentImage = self.originalImage
   }
   
+  func addMessage() {
+    self.presentViewController(self.messageAlertController, animated: true, completion: nil)
+  }
+  
   @IBAction func photoButtonPressed(sender: UIButton) {
-    if let popoverController = self.alertController.popoverPresentationController {
+    if let popoverController = self.optionsAlertController.popoverPresentationController {
       popoverController.sourceView = sender
       popoverController.sourceRect = sender.bounds
     }
-    presentViewController(alertController, animated: true, completion: nil)
+    presentViewController(self.optionsAlertController, animated: true, completion: nil)
+  }
+ 
+  func socialShare() {
+    let composeShareController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+    composeShareController.addImage(self.currentImage)
+    self.presentViewController(composeShareController, animated: true, completion: nil)
   }
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

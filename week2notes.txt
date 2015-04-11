@@ -77,6 +77,18 @@ Gesture Recognizers
 Social Sharing
 - SLComposeController
 
+LinkedList
+- recursion
+- iteration
+
+Extra Credit
+- post more than just images to parse
+  -message / hashtags
+- create an album photos framework
+
+Legal issues
+
+leetcode
 
 
 

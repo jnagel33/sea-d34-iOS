@@ -146,6 +146,7 @@
                     </collectionView>
                     <connections>
                         <outlet property="collectionView" destination="BOt-GX-bfD" id="1IP-wM-idh"/>
+                        <outlet property="flowLayout" destination="07E-W7-YKq" id="qTt-kw-nMJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g1H-eY-Rxd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -179,33 +180,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6H2-US-PFn">
-                            <size key="itemSize" width="100" height="100"/>
+                            <size key="itemSize" width="100" height="130"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TimelineCell" id="LeV-FI-qfb" customClass="GalleryCollectionViewCell" customModule="ImageFilters" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TimelineCell" id="LeV-FI-qfb" customClass="TimelineCollectionViewCell" customModule="ImageFilters" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="130"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mN8-df-nAs">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="100" verticalHuggingPriority="100" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="mN8-df-nAs">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="99" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SPL-YP-4jw">
+                                            <rect key="frame" x="8" y="107" width="84" height="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
-                                    <constraint firstItem="mN8-df-nAs" firstAttribute="top" secondItem="LeV-FI-qfb" secondAttribute="top" id="7FV-W3-xbH"/>
-                                    <constraint firstItem="mN8-df-nAs" firstAttribute="leading" secondItem="LeV-FI-qfb" secondAttribute="leading" id="TTw-1q-Ba7"/>
-                                    <constraint firstAttribute="trailing" secondItem="mN8-df-nAs" secondAttribute="trailing" id="dpM-7U-775"/>
-                                    <constraint firstAttribute="bottom" secondItem="mN8-df-nAs" secondAttribute="bottom" id="zpW-lV-Zgq"/>
+                                    <constraint firstItem="SPL-YP-4jw" firstAttribute="trailing" secondItem="LeV-FI-qfb" secondAttribute="trailingMargin" id="BRw-bp-c7x"/>
+                                    <constraint firstItem="mN8-df-nAs" firstAttribute="leading" secondItem="LeV-FI-qfb" secondAttribute="leading" id="GQf-MO-0Gv"/>
+                                    <constraint firstItem="SPL-YP-4jw" firstAttribute="bottom" secondItem="LeV-FI-qfb" secondAttribute="bottomMargin" id="UQ2-qW-Aso"/>
+                                    <constraint firstItem="SPL-YP-4jw" firstAttribute="leading" secondItem="LeV-FI-qfb" secondAttribute="leadingMargin" id="jpl-Kk-Ny6"/>
+                                    <constraint firstAttribute="trailing" secondItem="mN8-df-nAs" secondAttribute="trailing" id="nkx-MM-dwF"/>
+                                    <constraint firstItem="SPL-YP-4jw" firstAttribute="top" secondItem="mN8-df-nAs" secondAttribute="bottom" constant="7" id="s7E-qX-gHl"/>
+                                    <constraint firstItem="mN8-df-nAs" firstAttribute="top" secondItem="LeV-FI-qfb" secondAttribute="top" id="wDQ-LQ-dm2"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="imageView" destination="mN8-df-nAs" id="fJP-bf-D6m"/>
+                                    <outlet property="imageView" destination="mN8-df-nAs" id="ZP1-DK-7Xx"/>
+                                    <outlet property="messageLabel" destination="SPL-YP-4jw" id="ImA-3S-3rK"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -213,6 +224,7 @@
                     <navigationItem key="navigationItem" title="Timeline Photos" id="XMD-JB-092"/>
                     <connections>
                         <outlet property="collectionView" destination="uPf-c6-SWL" id="eqX-6q-vQo"/>
+                        <outlet property="flowLayout" destination="6H2-US-PFn" id="zVe-iD-mvi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3PE-Tk-6rD" userLabel="First Responder" sceneMemberID="firstResponder"/>
