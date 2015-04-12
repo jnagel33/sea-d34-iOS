@@ -27,6 +27,9 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   @IBOutlet weak var constrantImageTrailing: NSLayoutConstraint!
   @IBOutlet weak var constraintImageTop: NSLayoutConstraint!
   @IBOutlet weak var constraintImageBottom: NSLayoutConstraint!
+  @IBOutlet weak var constraintStatusMessageViewLeading: NSLayoutConstraint!
+  @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+  @IBOutlet weak var statusLabel: UILabel!
   
   let constraintcollectionViewBottomInFilter: CGFloat = 8
   let collectionViewHeight: CGFloat = 75
@@ -89,6 +92,8 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
     
+    self.constraintStatusMessageViewLeading.constant = -self.view.frame.width
+    
     self.originalImageConstraintBottom = self.constraintCollectionViewBottom.constant
     self.originalImageConstraintTopLeadingTrailing = self.constraintImageLeading.constant
     self.constraintCollectionViewBottom.constant = -tabBarController!.tabBar.frame.height - collectionViewHeight
@@ -119,39 +124,65 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     }
     self.optionsAlertController.addAction(filterAction)
     
-    let uploadAction = UIAlertAction(title: "Upload", style: .Default) { (alert) -> Void in
-      ParseService.uploadImageInfo(self.primaryImageView.image!, message: self.currentMessage, location: self.currentLocation, size: self.imageToUploadSize, completionHandler: { (error) -> Void in
-        self.currentMessage = nil
-        self.currentLocation = nil
-      })
+    let uploadAction = UIAlertAction(title: "Upload", style: .Default) { [weak self] (alert) -> Void in
+      if self != nil {
+        self!.statusLabel.text = "Processing..."
+        self!.statusLabel.textColor = UIColor.whiteColor()
+        self!.constraintStatusMessageViewLeading.constant = 0
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+          self!.view.layoutIfNeeded()
+        })
+        self!.activityIndicator.startAnimating()
+        ParseService.uploadImageInfo(self!.primaryImageView.image!, message: self!.currentMessage, location: self!.currentLocation, size: self!.imageToUploadSize, completionHandler: { (success, error) -> Void in
+          if error != nil {
+            self!.statusLabel.text = "An Error Occured"
+            self!.activityIndicator.stopAnimating()
+          } else {
+            self!.statusLabel.text = "Upload was successful!"
+            self!.statusLabel.textColor = UIColor.greenColor()
+            self!.activityIndicator.stopAnimating()
+            self!.view.layoutIfNeeded()
+            self!.constraintStatusMessageViewLeading.constant = self!.view.frame.width + self!.view.frame.width
+            UIView.animateWithDuration(2, animations: { () -> Void in
+              self!.view.layoutIfNeeded()
+            })
+            self!.currentLocation = nil
+            self!.currentMessage = nil
+          }
+        })
+      }
     }
     self.optionsAlertController.addAction(uploadAction)
     
     let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
     self.optionsAlertController.addAction(cancelAction)
     
-    let galleryAction = UIAlertAction(title: "Show Gallery", style: .Default) { (alert) -> Void in
-      self.performSegueWithIdentifier("ShowGallery", sender: self)
+    let galleryAction = UIAlertAction(title: "Show Gallery", style: .Default) { [weak self] (alert) -> Void in
+      if self != nil {
+        self!.performSegueWithIdentifier("ShowGallery", sender: self)
+      }
     }
     self.optionsAlertController.addAction(galleryAction)
     
-    let saveMessageAction = UIAlertAction(title: "Save", style: .Default) { (action: UIAlertAction!) -> Void in
-        let messageField = self.messageAlertController.textFields![0] as! UITextField
-        let locationField = self.messageAlertController.textFields![1] as! UITextField
-        self.currentMessage = messageField.text
-        self.currentLocation = locationField.text
+    let saveMessageAction = UIAlertAction(title: "Save", style: .Default) { [weak self] (action: UIAlertAction!) -> Void in
+      if self != nil {
+        let messageField = self!.messageAlertController.textFields![0] as! UITextField
+        let locationField = self!.messageAlertController.textFields![1] as! UITextField
+        self!.currentMessage = messageField.text
+        self!.currentLocation = locationField.text
+      }
     }
     let cancelMessageAction = UIAlertAction(title: "Cancel", style: .Default, handler: nil)
-    messageAlertController.addTextFieldWithConfigurationHandler {
+    self.messageAlertController.addTextFieldWithConfigurationHandler {
       (textField: UITextField!) -> Void in
       textField.placeholder = "Enter a message"
     }
-    messageAlertController.addTextFieldWithConfigurationHandler {
+    self.messageAlertController.addTextFieldWithConfigurationHandler {
       (textField: UITextField!) -> Void in
       textField.placeholder = "Enter your current location"
     }
-    messageAlertController.addAction(saveMessageAction)
-    messageAlertController.addAction(cancelMessageAction)
+    self.messageAlertController.addAction(saveMessageAction)
+    self.messageAlertController.addAction(cancelMessageAction)
 
   }
   
@@ -211,7 +242,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
       popoverController.sourceView = sender
       popoverController.sourceRect = sender.bounds
     }
-    presentViewController(self.optionsAlertController, animated: true, completion: nil)
+    self.presentViewController(self.optionsAlertController, animated: true, completion: nil)
   }
  
   func socialShare() {

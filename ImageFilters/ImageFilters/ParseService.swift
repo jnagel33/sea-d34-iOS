@@ -10,7 +10,7 @@ import Foundation
 
 class ParseService {
   
-  class func uploadImageInfo(image: UIImage, message: String?, location: String?, size: CGSize, completionHandler: (String?) -> Void) {
+  class func uploadImageInfo(image: UIImage, message: String?, location: String?, size: CGSize, completionHandler: (Bool?, NSError?) -> Void) {
     let resizedImage = ImageResizer.resizeImage(image, size: size)
     let imageData = UIImageJPEGRepresentation(image, 1.0)
     let imageFile = PFFile(name: "post.jpg", data: imageData)
@@ -22,12 +22,15 @@ class ParseService {
     if location != nil {
       post["location"] = location
     }
-    post.saveInBackgroundWithBlock { (finished, error) -> Void in
+    post.saveInBackgroundWithBlock { (success, error) -> Void in
       if error != nil {
-        //handle error
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+          completionHandler(nil, error)
+        })
       } else {
-        println("Successful upload")
-        completionHandler(nil)
+        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+          completionHandler(success, nil)
+        })
       }
     }
   }
@@ -40,7 +43,7 @@ class ParseService {
     query.orderByDescending("createdAt")
     query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
       if error != nil {
-        // handle error
+        completionHandler(nil, error)
       } else {
         let posts = objects as! [PFObject]
         completionHandler(posts, nil)

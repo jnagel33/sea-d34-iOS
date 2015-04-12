@@ -49,7 +49,6 @@ class TimelineInfoViewController: UIViewController {
           if error != nil {
             //handle error
           } else {
-            println("successful delete")
         self!.delegate!.removeCellFromCollectionView(self!.timelineImageInfo.objectId)
         self!.navigationController?.popToRootViewControllerAnimated(true)
           }
