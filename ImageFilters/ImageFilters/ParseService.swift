@@ -59,4 +59,25 @@ class ParseService {
       }
     }
   }
+  
+  class func deleteImageRecord(objectId: String, completionHandler: (Bool, NSError?) -> Void) {
+    var query = PFQuery(className: "Post")
+    var error: NSError?
+    
+    query.whereKey("objectId", equalTo: objectId)
+    query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+      if error != nil {
+       completionHandler(false, error)
+      } else {
+        let foundObjects = objects as! [PFObject]
+        foundObjects[0].deleteInBackgroundWithBlock({ (success, error) -> Void in
+          if error != nil {
+            completionHandler(false, error)
+          } else {
+            completionHandler(success, nil)
+          }
+        })
+      }
+    }
+  }
 }

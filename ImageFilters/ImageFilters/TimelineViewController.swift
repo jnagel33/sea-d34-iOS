@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimelineViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class TimelineViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, DeletedTimelineRecordDelegate {
 
   var flowLayout: UICollectionViewFlowLayout!
   @IBOutlet var collectionView: UICollectionView!
@@ -17,6 +17,7 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource, UICo
   let refreshControl = UIRefreshControl()
   var lastRefresh = NSDate()
   var selectedImage: TimelineImageInfo?
+  var newSizeForCells: CGSize!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -24,8 +25,11 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource, UICo
     self.collectionView.delegate = self
     self.collectionView.userInteractionEnabled = true
     self.flowLayout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+    self.newSizeForCells = self.flowLayout.itemSize
     
-    self.navigationController!.navigationBar.setBackgroundImage(MyStyleKit.imageOfNavAndTabBarBackground, forBarMetrics: .Default)
+    let topBarImage = UIImage(named: "TopBar")
+    let bottomBarImage = UIImage(named: "BottomBar")
+    self.navigationController!.navigationBar.setBackgroundImage(topBarImage, forBarMetrics: .Default)
     self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
     self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
     self.navigationController!.navigationBar.barStyle = UIBarStyle.Black
@@ -35,6 +39,9 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource, UICo
     self.collectionView.addSubview(refreshControl)
     
     var pinchRecognizer = UIPinchGestureRecognizer(target: self, action: "pinchOccurred:")
+    self.collectionView.addGestureRecognizer(pinchRecognizer)
+    
+    var longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPress:")
     self.collectionView.addGestureRecognizer(pinchRecognizer)
   }
   
@@ -61,10 +68,12 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource, UICo
           println(error!.description)
         } else {
           for (index, object) in enumerate(objects!) {
+            let objectId = object.objectId
             let imageFile = object["imageFile"] as! PFFile
             let message = object["message"] as? String
             let location = object["location"] as? String
             var imageInfo = TimelineImageInfo()
+            imageInfo.objectId = objectId
             imageInfo.file = imageFile
             imageInfo.message = message
             imageInfo.location = location
@@ -85,22 +94,36 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource, UICo
   }
   
   func pinchOccurred(sender: UIPinchGestureRecognizer) {
+    var maxSizeForCell = self.collectionView.frame.size
+    let minSizeForCell = CGSize(width: 50, height: 50)
+    let oldSize = self.flowLayout.itemSize
     if sender.state == UIGestureRecognizerState.Changed {
-      var maxSizeForCell = self.collectionView.frame.size
-      let minSizeForCell = CGSize(width: 75, height: 75)
-      let oldSize = self.flowLayout.itemSize
-      var newSize = CGSize(width: oldSize.width * sender.scale, height: oldSize.height * sender.scale)
-      if newSize.width >= maxSizeForCell.width {
-        newSize = CGSize(width: maxSizeForCell.width, height: maxSizeForCell.width)
-      } else if newSize.width <= minSizeForCell.height {
-        newSize = minSizeForCell
+      if (oldSize.width >= maxSizeForCell.width && sender.scale >= 1) || (oldSize.width <= minSizeForCell.width && sender.scale <= 1) {
+        return
+      } else {
+        self.newSizeForCells = CGSize(width: oldSize.width * sender.scale, height: oldSize.width * sender.scale)
+        if self.newSizeForCells.width >= maxSizeForCell.width {
+          self.newSizeForCells = CGSize(width: maxSizeForCell.width, height: maxSizeForCell.width)
+        } else if self.newSizeForCells.width <= minSizeForCell.height {
+          self.newSizeForCells = minSizeForCell
+        }
       }
-      self.flowLayout.itemSize = newSize
     } else if sender.state == UIGestureRecognizerState.Ended {
-      self.collectionView.performBatchUpdates({ () -> Void in
-        self.collectionView.reloadData()
-        self.flowLayout.invalidateLayout()
+      self.collectionView.performBatchUpdates({ [weak self] () -> Void in
+        if self != nil {
+          self!.collectionView.reloadSections(NSIndexSet(index: 0))
+          self!.flowLayout.itemSize = self!.newSizeForCells
+        }
       }, completion: nil)
+    }
+  }
+  
+  func removeCellFromCollectionView(objectId: String) -> Void {
+    for (index, info) in enumerate(timelineImageInfo) {
+      if info.objectId == objectId {
+        self.timelineImageInfo.removeAtIndex(index)
+        self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+      }
     }
   }
   
@@ -131,6 +154,7 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource, UICo
     if segue.identifier == "ShowTimelineInfo" {
       let destinationController = segue.destinationViewController as! TimelineInfoViewController
       destinationController.timelineImageInfo = self.selectedImage
+      destinationController.delegate = self
     }
   }
 }

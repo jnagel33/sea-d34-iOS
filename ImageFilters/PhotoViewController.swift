@@ -69,16 +69,17 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     let messageBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "addMessage")
     self.navigationItem.leftBarButtonItem = messageBarButton
     
-    
-    self.navigationController!.navigationBar.setBackgroundImage(MyStyleKit.imageOfNavAndTabBarBackground, forBarMetrics: .Default)
+    let topBarImage = UIImage(named: "TopBar")
+    let bottomBarImage = UIImage(named: "BottomBar")
+    self.navigationController!.navigationBar.setBackgroundImage(topBarImage, forBarMetrics: .Default)
     self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
     self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
     self.navigationController!.navigationBar.barStyle = UIBarStyle.Black
     
-    self.tabBarController!.tabBar.backgroundImage = MyStyleKit.imageOfNavAndTabBarBackground
+    self.tabBarController!.tabBar.backgroundImage = bottomBarImage
     self.tabBarController!.tabBar.tintColor = UIColor.whiteColor()
 
-    self.originalImage = UIImage(named: "photo2.jpg")
+    self.originalImage = UIImage(named: "photo3.jpg")
     self.currentImage = self.originalImage
     
     let options = [kCIContextWorkingColorSpace : NSNull()]
