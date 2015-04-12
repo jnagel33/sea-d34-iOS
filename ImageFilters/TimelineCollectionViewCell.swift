@@ -11,18 +11,14 @@ import UIKit
 class TimelineCollectionViewCell: UICollectionViewCell {
   
   @IBOutlet weak var imageView: UIImageView!
-    
-  @IBOutlet weak var messageLabel: UILabel!
-  
   
   func configureCell(timelineImageInfo: TimelineImageInfo) {
     self.tag++
     let tag = self.tag
-    self.messageLabel.text = nil
     self.imageView.image = nil
-    self.messageLabel.text = timelineImageInfo.message
     if timelineImageInfo.image != nil {
-      self.imageView.image = ImageResizer.resizeImage(timelineImageInfo.image!, size: self.imageView.frame.size)
+//      self.imageView.image = ImageResizer.resizeImage(timelineImageInfo.image!, size: self.imageView.frame.size)
+      self.imageView.image = timelineImageInfo.image
     } else {
       ParseService.imageFromPFFile(timelineImageInfo.file, completionHandler: { [weak self] (image, error) -> Void in
         if self != nil {

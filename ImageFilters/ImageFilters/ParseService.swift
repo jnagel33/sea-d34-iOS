@@ -10,7 +10,7 @@ import Foundation
 
 class ParseService {
   
-  class func uploadImageInfo(image: UIImage, message: String?, size: CGSize, completionHandler: (String?) -> Void) {
+  class func uploadImageInfo(image: UIImage, message: String?, location: String?, size: CGSize, completionHandler: (String?) -> Void) {
     let resizedImage = ImageResizer.resizeImage(image, size: size)
     let imageData = UIImageJPEGRepresentation(image, 1.0)
     let imageFile = PFFile(name: "post.jpg", data: imageData)
@@ -19,7 +19,9 @@ class ParseService {
     if message != nil {
       post["message"] = message
     }
-    
+    if location != nil {
+      post["location"] = location
+    }
     post.saveInBackgroundWithBlock { (finished, error) -> Void in
       if error != nil {
         //handle error

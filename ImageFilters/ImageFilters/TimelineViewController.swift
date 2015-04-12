@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimelineViewController: UIViewController, UICollectionViewDataSource {
+class TimelineViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
   var flowLayout: UICollectionViewFlowLayout!
   @IBOutlet var collectionView: UICollectionView!
@@ -16,13 +16,12 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
   var timelineImageInfo = [TimelineImageInfo]()
   let refreshControl = UIRefreshControl()
   var lastRefresh = NSDate()
-  var images = [UIImage]()
-  var imageSize: CGSize?
-  let imageViewBuffer: CGFloat = 50
+  var selectedImage: TimelineImageInfo?
   
   override func viewDidLoad() {
     super.viewDidLoad()
     self.collectionView.dataSource = self
+    self.collectionView.delegate = self
     self.collectionView.userInteractionEnabled = true
     self.flowLayout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
     
@@ -64,9 +63,11 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
           for (index, object) in enumerate(objects!) {
             let imageFile = object["imageFile"] as! PFFile
             let message = object["message"] as? String
+            let location = object["location"] as? String
             var imageInfo = TimelineImageInfo()
             imageInfo.file = imageFile
             imageInfo.message = message
+            imageInfo.location = location
             if date != nil {
               self!.timelineImageInfo.insert(imageInfo, atIndex: 0)
               self!.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
@@ -90,7 +91,7 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
       let oldSize = self.flowLayout.itemSize
       var newSize = CGSize(width: oldSize.width * sender.scale, height: oldSize.height * sender.scale)
       if newSize.width >= maxSizeForCell.width {
-        newSize = CGSize(width: maxSizeForCell.width, height: maxSizeForCell.width - self.imageViewBuffer)
+        newSize = CGSize(width: maxSizeForCell.width, height: maxSizeForCell.width)
       } else if newSize.width <= minSizeForCell.height {
         newSize = minSizeForCell
       }
@@ -117,5 +118,19 @@ class TimelineViewController: UIViewController, UICollectionViewDataSource {
     return cell
   }
   
+  //MARK: UICollectionViewDelegate
   
+  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    self.selectedImage = self.timelineImageInfo[indexPath.row]
+    self.performSegueWithIdentifier("ShowTimelineInfo", sender: self)
+  }
+  
+  //MARK: Prepare for segue
+  
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if segue.identifier == "ShowTimelineInfo" {
+      let destinationController = segue.destinationViewController as! TimelineInfoViewController
+      destinationController.timelineImageInfo = self.selectedImage
+    }
+  }
 }

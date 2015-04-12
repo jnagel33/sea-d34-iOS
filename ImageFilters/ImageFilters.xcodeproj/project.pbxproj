@@ -18,6 +18,7 @@
 		43B189EC1AD711550076770B /* MyStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B189EB1AD711550076770B /* MyStyleKit.swift */; };
 		43B189EE1AD743730076770B /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B189ED1AD743730076770B /* GalleryViewController.swift */; };
 		43B189F01AD744FE0076770B /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B189EF1AD744FE0076770B /* GalleryCollectionViewCell.swift */; };
+		43B5B44A1AD9ECB50087DBDE /* TimelineInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B5B4491AD9ECB50087DBDE /* TimelineInfoViewController.swift */; };
 		43C021C71AD6028000DA2A5C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C021C61AD6028000DA2A5C /* Constants.swift */; };
 		43C021C91AD60C3900DA2A5C /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C021C81AD60C3900DA2A5C /* ImageCollectionViewCell.swift */; };
 		43CB509E1AD4764E00A5F99C /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 43CB509D1AD4764E00A5F99C /* libsqlite3.0.dylib */; };
@@ -65,6 +66,7 @@
 		43B189EB1AD711550076770B /* MyStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyStyleKit.swift; path = ImageFilters/MyStyleKit.swift; sourceTree = "<group>"; };
 		43B189ED1AD743730076770B /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		43B189EF1AD744FE0076770B /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
+		43B5B4491AD9ECB50087DBDE /* TimelineInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineInfoViewController.swift; sourceTree = "<group>"; };
 		43C021C61AD6028000DA2A5C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		43C021C81AD60C3900DA2A5C /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		43CB508E1AD4751800A5F99C /* ImageFilters-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ImageFilters-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				4369F6F81AD34C7300BCC884 /* PhotoViewController.swift */,
 				43B189ED1AD743730076770B /* GalleryViewController.swift */,
 				43E5EBFD1AD5BED600933B38 /* TimelineViewController.swift */,
+				43B5B4491AD9ECB50087DBDE /* TimelineInfoViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				4369F6F91AD34C7300BCC884 /* PhotoViewController.swift in Sources */,
 				4309D9221AD7A040009DDBB4 /* TimelineImageInfo.swift in Sources */,
 				43E5EBFE1AD5BED600933B38 /* TimelineViewController.swift in Sources */,
+				43B5B44A1AD9ECB50087DBDE /* TimelineInfoViewController.swift in Sources */,
 				43CB50C11AD4AA5400A5F99C /* ImageResizer.swift in Sources */,
 				43CB50BF1AD4A6CD00A5F99C /* ParseService.swift in Sources */,
 				43B189EE1AD743730076770B /* GalleryViewController.swift in Sources */,

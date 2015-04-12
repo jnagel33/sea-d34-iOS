@@ -16,7 +16,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   //MARK: Constants, Variables, and Outlets
   
   let optionsAlertController = UIAlertController(title: "Options", message: nil, preferredStyle: .ActionSheet)
-  var messageAlertController = UIAlertController(title: "Add Message", message: "Add a message to save with this photo", preferredStyle: .Alert)
+  var messageAlertController = UIAlertController(title: "Add Photo Description", message: nil, preferredStyle: .Alert)
   
   @IBOutlet weak var photoButton: UIButton!
   @IBOutlet weak var collectionView: UICollectionView!
@@ -40,6 +40,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   var currentThumbnailImage: UIImage!
   var originalThumbnailImage : UIImage!
   var currentMessage: String?
+  var currentLocation: String?
   
   let filters = [FilterService.colorInvertFilter, FilterService.photoEffectChromeFilter, FilterService.photoEffectInstantFilter, FilterService.vignetteFilter, FilterService.photoEffectFadeFilter, FilterService.sepiaToneFilter, FilterService.gaussianBlurFilter, FilterService.colorPosterizeFilter, FilterService.photoEffectNoirFilter, FilterService.photoEffectTransferFilter, FilterService.greenMonochromeFilter, FilterService.blueMonochromeFilter, FilterService.hueAdjustFilter]
   var context: CIContext!
@@ -118,11 +119,11 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.optionsAlertController.addAction(filterAction)
     
     let uploadAction = UIAlertAction(title: "Upload", style: .Default) { (alert) -> Void in
-      ParseService.uploadImageInfo(self.primaryImageView.image!, message: self.currentMessage, size: self.imageToUploadSize, completionHandler: { (error) -> Void in
+      ParseService.uploadImageInfo(self.primaryImageView.image!, message: self.currentMessage, location: self.currentLocation, size: self.imageToUploadSize, completionHandler: { (error) -> Void in
         self.currentMessage = nil
+        self.currentLocation = nil
       })
     }
-    
     self.optionsAlertController.addAction(uploadAction)
     
     let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -134,12 +135,19 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
     self.optionsAlertController.addAction(galleryAction)
     
     let saveMessageAction = UIAlertAction(title: "Save", style: .Default) { (action: UIAlertAction!) -> Void in
-        let textField = self.messageAlertController.textFields![0] as! UITextField
-        self.currentMessage = textField.text
+        let messageField = self.messageAlertController.textFields![0] as! UITextField
+        let locationField = self.messageAlertController.textFields![1] as! UITextField
+        self.currentMessage = messageField.text
+        self.currentLocation = locationField.text
     }
     let cancelMessageAction = UIAlertAction(title: "Cancel", style: .Default, handler: nil)
     messageAlertController.addTextFieldWithConfigurationHandler {
       (textField: UITextField!) -> Void in
+      textField.placeholder = "Enter a message"
+    }
+    messageAlertController.addTextFieldWithConfigurationHandler {
+      (textField: UITextField!) -> Void in
+      textField.placeholder = "Enter your current location"
     }
     messageAlertController.addAction(saveMessageAction)
     messageAlertController.addAction(cancelMessageAction)
@@ -189,7 +197,12 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   }
   
   func addMessage() {
-    self.presentViewController(self.messageAlertController, animated: true, completion: nil)
+    let messageTextField = self.messageAlertController.textFields![0] as! UITextField
+    let locationTextField = self.messageAlertController.textFields![1] as! UITextField
+    messageTextField.text = self.currentMessage
+    locationTextField.text = self.currentLocation
+    self.presentViewController(self.messageAlertController, animated: true) {[weak self] () -> Void in
+    }
   }
   
   @IBAction func photoButtonPressed(sender: UIButton) {

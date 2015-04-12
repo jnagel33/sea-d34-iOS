@@ -12,4 +12,5 @@ class TimelineImageInfo {
   var file: PFFile!
   var image: UIImage?
   var message: String?
+  var location: String?
 }

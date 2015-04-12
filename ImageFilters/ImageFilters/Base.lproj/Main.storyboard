@@ -102,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2084" y="390"/>
+            <point key="canvasLocation" x="2068" y="390"/>
         </scene>
         <!--Gallery View Controller-->
         <scene sceneID="joo-6y-mLD">
@@ -180,7 +180,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6H2-US-PFn">
-                            <size key="itemSize" width="100" height="130"/>
+                            <size key="itemSize" width="100" height="100"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
@@ -190,34 +190,33 @@
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="100" height="130"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="100" verticalHuggingPriority="100" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="mN8-df-nAs">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="99" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SPL-YP-4jw">
-                                            <rect key="frame" x="8" y="107" width="84" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
-                                    <constraint firstItem="SPL-YP-4jw" firstAttribute="trailing" secondItem="LeV-FI-qfb" secondAttribute="trailingMargin" id="BRw-bp-c7x"/>
+                                    <constraint firstAttribute="trailing" secondItem="mN8-df-nAs" secondAttribute="trailing" id="4NL-qV-IKL"/>
                                     <constraint firstItem="mN8-df-nAs" firstAttribute="leading" secondItem="LeV-FI-qfb" secondAttribute="leading" id="GQf-MO-0Gv"/>
-                                    <constraint firstItem="SPL-YP-4jw" firstAttribute="bottom" secondItem="LeV-FI-qfb" secondAttribute="bottomMargin" id="UQ2-qW-Aso"/>
-                                    <constraint firstItem="SPL-YP-4jw" firstAttribute="leading" secondItem="LeV-FI-qfb" secondAttribute="leadingMargin" id="jpl-Kk-Ny6"/>
+                                    <constraint firstItem="mN8-df-nAs" firstAttribute="leading" secondItem="LeV-FI-qfb" secondAttribute="leading" id="LXB-0M-kBi"/>
+                                    <constraint firstAttribute="bottom" secondItem="mN8-df-nAs" secondAttribute="bottom" id="POy-e7-9Az"/>
+                                    <constraint firstItem="mN8-df-nAs" firstAttribute="top" secondItem="LeV-FI-qfb" secondAttribute="top" id="jWu-mD-vvv"/>
                                     <constraint firstAttribute="trailing" secondItem="mN8-df-nAs" secondAttribute="trailing" id="nkx-MM-dwF"/>
-                                    <constraint firstItem="SPL-YP-4jw" firstAttribute="top" secondItem="mN8-df-nAs" secondAttribute="bottom" constant="7" id="s7E-qX-gHl"/>
                                     <constraint firstItem="mN8-df-nAs" firstAttribute="top" secondItem="LeV-FI-qfb" secondAttribute="top" id="wDQ-LQ-dm2"/>
                                 </constraints>
-                                <size key="customSize" width="100" height="130"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="GQf-MO-0Gv"/>
+                                        <exclude reference="nkx-MM-dwF"/>
+                                        <exclude reference="wDQ-LQ-dm2"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <outlet property="imageView" destination="mN8-df-nAs" id="ZP1-DK-7Xx"/>
-                                    <outlet property="messageLabel" destination="SPL-YP-4jw" id="ImA-3S-3rK"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -225,11 +224,80 @@
                     <navigationItem key="navigationItem" title="Timeline Photos" id="XMD-JB-092"/>
                     <connections>
                         <outlet property="collectionView" destination="uPf-c6-SWL" id="eqX-6q-vQo"/>
+                        <segue destination="nOh-10-S01" kind="show" identifier="ShowTimelineInfo" id="OeL-aQ-QbX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3PE-Tk-6rD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1630" y="1216"/>
+        </scene>
+        <!--Timeline Info View Controller-->
+        <scene sceneID="ezr-bt-Oec">
+            <objects>
+                <viewController id="nOh-10-S01" customClass="TimelineInfoViewController" customModule="ImageFilters" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="l2c-oI-R0t"/>
+                        <viewControllerLayoutGuide type="bottom" id="of2-7d-oB1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7CD-It-XiR">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yC0-6U-JBm">
+                                <rect key="frame" x="0.0" y="64" width="600" height="387"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mfb-Ni-9hX">
+                                <rect key="frame" x="16" y="459" width="84" height="22"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="messagetext" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yJR-kZ-Al1">
+                                <rect key="frame" x="108" y="459" width="476" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="yC0-6U-JBm" firstAttribute="top" secondItem="l2c-oI-R0t" secondAttribute="bottom" id="2H4-ux-v11"/>
+                            <constraint firstItem="mfb-Ni-9hX" firstAttribute="top" secondItem="yC0-6U-JBm" secondAttribute="bottom" constant="8" id="2go-YX-ojp"/>
+                            <constraint firstItem="mfb-Ni-9hX" firstAttribute="leading" secondItem="7CD-It-XiR" secondAttribute="leadingMargin" id="7my-iC-MI1"/>
+                            <constraint firstItem="mfb-Ni-9hX" firstAttribute="top" secondItem="yC0-6U-JBm" secondAttribute="bottom" constant="8" id="99d-TI-8Fi"/>
+                            <constraint firstAttribute="trailing" secondItem="yC0-6U-JBm" secondAttribute="trailing" id="CAk-FT-FLU"/>
+                            <constraint firstItem="mfb-Ni-9hX" firstAttribute="top" secondItem="yJR-kZ-Al1" secondAttribute="top" id="FBL-eJ-J9G"/>
+                            <constraint firstItem="yJR-kZ-Al1" firstAttribute="top" secondItem="yC0-6U-JBm" secondAttribute="bottom" constant="8" id="LNw-MS-BkJ"/>
+                            <constraint firstItem="yC0-6U-JBm" firstAttribute="leading" secondItem="7CD-It-XiR" secondAttribute="leading" id="N9B-nM-hL5"/>
+                            <constraint firstItem="yJR-kZ-Al1" firstAttribute="leading" secondItem="mfb-Ni-9hX" secondAttribute="trailing" constant="8" id="NZx-oI-afq"/>
+                            <constraint firstItem="mfb-Ni-9hX" firstAttribute="baseline" secondItem="yJR-kZ-Al1" secondAttribute="baseline" id="OA3-7y-1Oy"/>
+                            <constraint firstItem="of2-7d-oB1" firstAttribute="top" secondItem="yC0-6U-JBm" secondAttribute="bottom" constant="100" id="Pf9-5h-0aH"/>
+                            <constraint firstItem="yJR-kZ-Al1" firstAttribute="trailing" secondItem="7CD-It-XiR" secondAttribute="trailingMargin" id="SR8-5r-UfX"/>
+                            <constraint firstItem="mfb-Ni-9hX" firstAttribute="leading" secondItem="7CD-It-XiR" secondAttribute="leadingMargin" id="dFf-sR-V6O"/>
+                            <constraint firstItem="yJR-kZ-Al1" firstAttribute="top" secondItem="yC0-6U-JBm" secondAttribute="bottom" constant="8" id="fnm-gs-9g4"/>
+                            <constraint firstItem="yJR-kZ-Al1" firstAttribute="leading" secondItem="mfb-Ni-9hX" secondAttribute="trailing" constant="8" id="j2G-RP-cfr"/>
+                            <constraint firstItem="yJR-kZ-Al1" firstAttribute="trailing" secondItem="7CD-It-XiR" secondAttribute="trailingMargin" id="kzi-6v-e9U"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="2go-YX-ojp"/>
+                                <exclude reference="FBL-eJ-J9G"/>
+                                <exclude reference="OA3-7y-1Oy"/>
+                                <exclude reference="dFf-sR-V6O"/>
+                                <exclude reference="NZx-oI-afq"/>
+                                <exclude reference="fnm-gs-9g4"/>
+                                <exclude reference="kzi-6v-e9U"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="yC0-6U-JBm" id="bwj-lk-KIX"/>
+                        <outlet property="messageLabel" destination="yJR-kZ-Al1" id="cvU-2f-2BC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EaT-rL-znB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2650" y="1209"/>
         </scene>
         <!--Item-->
         <scene sceneID="KbD-oU-R6d">
