@@ -16,7 +16,7 @@ class PhotoViewController: UIViewController, UIImagePickerControllerDelegate, UI
   //MARK: Constants, Variables, and Outlets
   
   let optionsAlertController = UIAlertController(title: "Options", message: nil, preferredStyle: .ActionSheet)
-  var messageAlertController = UIAlertController(title: "Add Photo Description", message: nil, preferredStyle: .Alert)
+  var messageAlertController = UIAlertController(title: "Add Photo Details", message: nil, preferredStyle: .Alert)
   
   @IBOutlet weak var photoButton: UIButton!
   @IBOutlet weak var collectionView: UICollectionView!

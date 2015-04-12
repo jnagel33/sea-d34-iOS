@@ -98,6 +98,5 @@ class FilterService {
     let result = filter!.valueForKey(kCIOutputImageKey) as! CIImage
     let resultRef = context.createCGImage(result, fromRect: result.extent())
     return UIImage(CGImage: resultRef)!
-
   }
 }
