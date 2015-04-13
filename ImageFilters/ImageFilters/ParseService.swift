@@ -54,7 +54,7 @@ class ParseService {
   class func imageFromPFFile(file: PFFile, completionHandler: (UIImage?, NSError?) -> Void) {
     file.getDataInBackgroundWithBlock { (data, error) -> Void in
       if error != nil {
-        //handle error
+        completionHandler(nil, error)
       } else {
         if let image = UIImage(data: data!) {
           completionHandler(image, nil)
